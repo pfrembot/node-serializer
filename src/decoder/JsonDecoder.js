@@ -10,12 +10,12 @@ import * as FormatType from '../FormatTypes';
 class JsonDecoder implements DecoderInterface {
 
     /** @inheritDoc */
-    decode(string: string, format: string, /** context */) {
+    decode(string: string, format: string, context: Object) {
         return JSON.parse(string);
     }
 
     /** @inheritDoc */
-    supportsDecoding(format: string) {
+    supportsDecoding(format: string, context: Object) {
         return format === FormatType.JSON;
     }
 }
