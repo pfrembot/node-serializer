@@ -1,5 +1,4 @@
 import assert from 'assert';
-import StringStream from 'string-to-stream';
 import JsonDecoder from '../../src/decoder/JsonDecoder';
 
 describe('JsonDecoder', () => {
