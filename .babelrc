@@ -1,0 +1,10 @@
+{
+  "presets": ["env", "flow"],
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    ["babel-plugin-transform-builtin-extend",
+      { "globals": ["Error", "Array"] }
+    ]
+  ]
+}
