@@ -1,6 +1,6 @@
 // @flow
 
-type PropType = Function|typeof undefined;
+import type { Decorator } from '../decorators/DecoratorRegistry';
 
 /**
  * PropertyMetadata Class
@@ -9,22 +9,31 @@ type PropType = Function|typeof undefined;
  */
 class PropertyMetadata {
     name: string;
-    type: PropType;
     descriptor: Object;
+    decorators: Decorator[] = [];
 
     /**
      * PropertyMetadata Constructor
      *
      * @param {string} property
-     * @param {Function|undefined} type
      * @param {Object} descriptor
+     * @param {Decorator[]} decorators
      *
      * @constructor
      */
-    constructor(property: string, type: PropType, descriptor: Object) {
+    constructor(property: string, descriptor: Object, ...decorators: Decorator[]) {
         this.name = property;
-        this.type = type;
         this.descriptor = descriptor;
+        this.decorators = decorators;
+    }
+
+    /**
+     * Return property decorators
+     *
+     * @returns {Decorator[]}
+     */
+    getDecorators() {
+        return this.decorators;
     }
 }
 

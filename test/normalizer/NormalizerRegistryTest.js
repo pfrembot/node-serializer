@@ -1,6 +1,7 @@
 import assert from 'assert';
 import NormalizerRegistry from '../../src/normalizer/NormalizerRegistry';
 import MetadataFactory from '../../src/metadata/MetadataFactory';
+import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 import DefaultNormalizer from "../../src/normalizer/DefaultNormalizer";
 import NormalizerInvalidException from '../../src/exception/NormalizerInvalidException';
 import NormalizerNotFoundException from '../../src/exception/NormalizerNotFoundException';
@@ -13,7 +14,7 @@ describe('NormalizerRegistry', () => {
     });
 
     describe('#constructor', () => {
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
         it('should contain a reference to the metadataFactory', () => {
@@ -22,7 +23,7 @@ describe('NormalizerRegistry', () => {
     });
 
     describe('#addNormalizer', () => {
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
         it('should throw an error when adding something which doesn\'t extend AbstractNormalizer', () => {
@@ -41,7 +42,7 @@ describe('NormalizerRegistry', () => {
 
     describe('#getNormalizer', () => {
         const normalizer = new DefaultNormalizer();
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
         it('should throw an exception if no normalizer can be matched', () => {
@@ -61,7 +62,7 @@ describe('NormalizerRegistry', () => {
 
     describe('#getDenormalizer', () => {
         const normalizer = new DefaultNormalizer();
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
         it('should throw an exception if no normalizer can be matched', () => {

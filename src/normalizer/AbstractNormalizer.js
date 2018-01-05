@@ -6,6 +6,7 @@ import NormalizerRegistry from './NormalizerRegistry';
 import MethodNotImplementedException from '../exception/MethodNotImplementedException';
 import SerializationContext from '../SerializationContext';
 import DeserializationContext from '../DeserializationContext';
+import DecoratorRegistry from '../decorators/DecoratorRegistry';
 
 /**
  * Class AbstractNormalizer
@@ -22,6 +23,11 @@ class AbstractNormalizer implements NormalizerInterface, DenormalizerInterface {
      * @type {NormalizerRegistry}
      */
     _normalizerRegistry: NormalizerRegistry;
+
+    /**
+     * @type {DecoratorRegistry}
+     */
+    _decoratorRegistry: DecoratorRegistry;
 
     /**
      * Return metadata factory
@@ -79,13 +85,39 @@ class AbstractNormalizer implements NormalizerInterface, DenormalizerInterface {
         this._normalizerRegistry = normalizerRegistry;
     }
 
+    /**
+     * Get decorator registry
+     *
+     * This is expected to have been set when the normalizer was added to the
+     * normalizer registry {@see NormalizerRegistry.addNormalizer()} and will throw an exception when
+     * attempting to read property on un-registered normalizers
+     *
+     * @returns {DecoratorRegistry}
+     */
+    get decoratorRegistry(): DecoratorRegistry {
+        if (!this._decoratorRegistry) {
+            throw Error(`Decorator registry was not set. Are you trying to use this outside the NormalizerRegistry?`);
+        }
+
+        return this._decoratorRegistry;
+    }
+
+    /**
+     * Set decorator registry
+     *
+     * @param {DecoratorRegistry} decoratorRegistry
+     */
+    set decoratorRegistry(decoratorRegistry: DecoratorRegistry) {
+        this._decoratorRegistry = decoratorRegistry;
+    }
+
     /** @inheritDoc */
     normalize(data: any, format: string, context: SerializationContext) {
         throw new MethodNotImplementedException(this.constructor.name);
     }
 
     /** @inheritDoc */
-    denormalize(data: any, format: string, cls: Function, context: DeserializationContext) {
+    denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
         throw new MethodNotImplementedException(this.constructor.name);
     }
 
@@ -95,7 +127,7 @@ class AbstractNormalizer implements NormalizerInterface, DenormalizerInterface {
     }
 
     /** @inheritDoc */
-    supportsDenormalization(data: any, format: string, cls: Function, context: DeserializationContext) {
+    supportsDenormalization(data: any, format: string, cls: ?Function, context: DeserializationContext) {
         return false;
     }
 }

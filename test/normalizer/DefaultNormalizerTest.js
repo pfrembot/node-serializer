@@ -1,11 +1,12 @@
 import assert from 'assert';
 import DefaultNormalizer from '../../src/normalizer/DefaultNormalizer';
-import NormalizerRegistry from "../../src/normalizer/NormalizerRegistry";
+import NormalizerRegistry from '../../src/normalizer/NormalizerRegistry';
 import MetadataFactory from '../../src/metadata/MetadataFactory';
+import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 
 describe('DefaultNormalizer', () => {
     const normalizer = new DefaultNormalizer();
-    const metadataFactory = new MetadataFactory();
+    const metadataFactory = new MetadataFactory(new DecoratorRegistry());
     const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
     normalizerRegistry.addNormalizer(normalizer);

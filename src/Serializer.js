@@ -1,5 +1,6 @@
 // @flow
 import MetadataFactory from './metadata/MetadataFactory';
+import DecoratorRegistry from './decorators/DecoratorRegistry';
 import NormalizerRegistry from './normalizer/NormalizerRegistry';
 import DecoderRegistry from './decoder/DecoderRegistry';
 import EncoderRegistry from './encoder/EncoderRegistry';
@@ -12,6 +13,7 @@ import DeserializationContext from './DeserializationContext';
  * @class Serializer
  */
 class Serializer {
+    decoratorRegistry: DecoratorRegistry;
     normalizerRegistry: NormalizerRegistry;
     encoderRegistry: EncoderRegistry;
     decoderRegistry: DecoderRegistry;
@@ -24,7 +26,8 @@ class Serializer {
      * @param {DecoderRegistry} decoderRegistry
      */
     constructor(normalizerRegistry: NormalizerRegistry, encoderRegistry: EncoderRegistry, decoderRegistry: DecoderRegistry) {
-        this.normalizerRegistry = normalizerRegistry || new NormalizerRegistry(new MetadataFactory());
+        this.normalizerRegistry = normalizerRegistry || new NormalizerRegistry(new MetadataFactory(new DecoratorRegistry()));
+        this.decoratorRegistry = this.normalizerRegistry.metadataFactory.decoratorRegistry || new DecoratorRegistry();
         this.encoderRegistry = encoderRegistry || new EncoderRegistry();
         this.decoderRegistry = decoderRegistry || new DecoderRegistry();
     }

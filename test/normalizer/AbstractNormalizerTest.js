@@ -2,6 +2,7 @@ import assert from 'assert';
 import AbstractNormalizer from '../../src/normalizer/AbstractNormalizer';
 import NormalizerRegistry from '../../src/normalizer/NormalizerRegistry';
 import MetadataFactory from '../../src/metadata/MetadataFactory';
+import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 import MethodNotImplementedException from '../../src/exception/MethodNotImplementedException';
 
 describe('AbstractNormalizer', () => {
@@ -13,7 +14,7 @@ describe('AbstractNormalizer', () => {
 
     describe('#get metadataFactory', () => {
         const normalizer = new AbstractNormalizer();
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
 
         it('should throw exception if metadataFactory not set', () => {
             assert.throws(() => { normalizer.metadataFactory }, Error);
@@ -28,7 +29,7 @@ describe('AbstractNormalizer', () => {
 
     describe('#set metadataFactory', () => {
         const normalizer = new AbstractNormalizer();
-        const metadataFactory = new MetadataFactory();
+        const metadataFactory = new MetadataFactory(new DecoratorRegistry());
 
         it('should set metadataFactory without error', () => {
             assert.doesNotThrow(() => normalizer.metadataFactory = metadataFactory);

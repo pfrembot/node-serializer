@@ -53,6 +53,7 @@ class NormalizerRegistry {
         }
 
         normalizer.metadataFactory = this.metadataFactory;
+        normalizer.decoratorRegistry = this.metadataFactory.decoratorRegistry;
         normalizer.normalizerRegistry = this;
 
         this.normalizers.unshift(normalizer);
@@ -93,7 +94,7 @@ class NormalizerRegistry {
      *
      * @throws NormalizerNotFoundException
      */
-    getDenormalizer(data: any, format: string, cls: Function, context: DeserializationContext) {
+    getDenormalizer(data: any, format: string, cls: ?Function, context: DeserializationContext) {
         for (const normalizer of this.normalizers) {
             if (normalizer.supportsDenormalization(data, format, cls, context)) {
                 return normalizer;

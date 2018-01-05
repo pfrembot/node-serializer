@@ -1,1 +1,1 @@
-export { Type } from './Type';
+export { Type, TypeKey, TypeInvoker } from './Type';

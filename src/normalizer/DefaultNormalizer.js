@@ -1,6 +1,8 @@
 import AbstractNormalizer from './AbstractNormalizer';
 import NormalizationException from '../exception/NormalizationException';
 import DenormalizationException from '../exception/DenormalizationException';
+import SerializationContext from '../SerializationContext';
+import DeserializationContext from '../DeserializationContext';
 
 /**
  * DefaultNormalizer Class
@@ -22,7 +24,7 @@ import DenormalizationException from '../exception/DenormalizationException';
 class DefaultNormalizer extends AbstractNormalizer {
 
     /** @inheritDoc */
-    normalize(data: any, format: string) {
+    normalize(data: any, format: string, context: SerializationContext) {
         const type = data !== null ? typeof data : 'null';
 
         switch (type) {
@@ -38,9 +40,9 @@ class DefaultNormalizer extends AbstractNormalizer {
 
                 return keys.reduce((result, key) => {
                     const value = data[key];
-                    const normalizer = this.normalizerRegistry.getNormalizer(value, format);
+                    const normalizer = this.normalizerRegistry.getNormalizer(value, format, context);
 
-                    result[key] = normalizer.normalize(value, format);
+                    result[key] = normalizer.normalize(value, format, context);
                     return result;
                 }, result);
         }
@@ -49,7 +51,7 @@ class DefaultNormalizer extends AbstractNormalizer {
     }
 
     /** @inheritDoc */
-    denormalize(data: any, format: string, cls: Function) {
+    denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
         const type = data !== null ? typeof data : 'null';
 
         switch (type) {
@@ -65,10 +67,10 @@ class DefaultNormalizer extends AbstractNormalizer {
 
                 return keys.reduce((result, key) => {
                     const value = data[key];
-                    const denormalizer = this.normalizerRegistry.getDenormalizer(value, format, cls);
+                    const denormalizer = this.normalizerRegistry.getDenormalizer(value, format, cls, context);
 
                     // @todo: need a way to determine the correct class to use (e.x. { foo: FooClass } or FooClass[])
-                    result[key] = denormalizer.denormalize(value, format, cls);
+                    result[key] = denormalizer.denormalize(value, format, cls, context);
                     return result;
                 }, result);
         }
@@ -77,13 +79,13 @@ class DefaultNormalizer extends AbstractNormalizer {
     }
 
     /** @inheritDoc */
-    supportsNormalization(data: any, format: string) {
+    supportsNormalization(data: any, format: string, context: SerializationContext) {
         return true; // attempts to normalize all data types
     }
 
     /** @inheritDoc */
-    supportsDenormalization(data: any, format: string, cls: Function) {
-        return true; // attempt to denormailize all data types
+    supportsDenormalization(data: any, format: string, cls: ?Function, context: DeserializationContext) {
+        return true; // attempt to denormalize all data types
     }
 }
 

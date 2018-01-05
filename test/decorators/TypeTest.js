@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { Type } from '../../src/decorators';
-import { _symbol as TypeSymbol } from '../../src/decorators/Type';
+import { TypeKey } from '../../src/decorators/Type';
 
 describe('Type', () => {
     const decorator = Type(Boolean);
@@ -17,8 +17,8 @@ describe('Type', () => {
         const descriptor = { writable: true, configurable: false, enumerable: true, value: true };
 
         assert.strictEqual(decorator(cls, property, descriptor), descriptor);
-        assert.equal(cls.constructor[TypeSymbol] instanceof Object, true);
-        assert.equal(property in cls.constructor[TypeSymbol], true);
-        assert.strictEqual(cls.constructor[TypeSymbol][property], Boolean);
+        assert.equal(cls.constructor[TypeKey] instanceof Object, true);
+        assert.equal(property in cls.constructor[TypeKey], true);
+        assert.strictEqual(cls.constructor[TypeKey][property], Boolean);
     });
 });

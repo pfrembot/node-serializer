@@ -26,7 +26,7 @@ import { DecoderInterface } from "./DecoderInterface";
 class DecoderRegistry {
     /**
      * Decoder Storage
-     * @type {Array|DecoderInterface[]}
+     * @type {DecoderInterface[]}
      */
     decoders = [];
 

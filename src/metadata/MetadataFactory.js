@@ -1,7 +1,7 @@
 // @flow
 import ClassMetadata from './ClassMetadata';
 import PropertyMetadata from './PropertyMetadata';
-import { _symbol as TypeSymbol } from "../decorators/Type";
+import DecoratorRegistry from '../decorators/DecoratorRegistry';
 
 /**
  * Metadata CacheKey Property
@@ -33,6 +33,21 @@ class MetadataFactory {
     metadatas: { [Symbol]: ClassMetadata } = {};
 
     /**
+     * Decorator Registry
+     * @type {DecoratorRegistry}
+     */
+    decoratorRegistry: DecoratorRegistry;
+
+    /**
+     * MetadataFactory Constructor
+     *
+     * @param {DecoratorRegistry} decoratorRegistry
+     */
+    constructor(decoratorRegistry: DecoratorRegistry) {
+        this.decoratorRegistry = decoratorRegistry;
+    }
+
+    /**
      * Compile and return metadata for the target class
      *
      * This metadata is used during serialization to determine how the
@@ -49,15 +64,15 @@ class MetadataFactory {
         }
 
         cls[CacheKey] = cls[CacheKey] || key;
-        cls[TypeSymbol] = cls[TypeSymbol] || {};
 
-        const instance = new cls();
-        const props = Object.getOwnPropertyNames(instance);
-        const properties = props.map(prop => {
+        const instance = new cls(); // @todo: find a way to not call constructor here to avoid user-defined errors
+        const instanceProps = Object.getOwnPropertyNames(instance);
+        const decoratorKeys = Reflect.ownKeys(this.decoratorRegistry.decorators);
+        const properties = instanceProps.map(prop => {
             const descriptor = Object.getOwnPropertyDescriptor(instance, prop);
-            const type = cls[TypeSymbol][prop] || undefined;
+            const decorators = decoratorKeys.map(key => ({ key, value: cls[key][prop] } || undefined)).filter(Boolean);
 
-            return new PropertyMetadata(prop, type, descriptor);
+            return new PropertyMetadata(prop, descriptor, ...decorators);
         });
 
         return this.metadatas[key] = new ClassMetadata(properties);
@@ -81,13 +96,24 @@ class MetadataFactory {
 
     /**
      * Test if the target class has metadata associated with it
-     * that should be used during serialization
+     * which should be used during serialization
+     *
+     * Currently this only includes classes that have registered decorators applied to them to
+     * avoid using a metadata-aware normalizer on generic or un-decorated data structures
      *
      * @param {Function} cls
      * @returns {boolean}
      */
     hasClassMetadata(cls: Function): boolean {
-        return Boolean(cls[TypeSymbol])
+        const key:any = cls[CacheKey] || Symbol(cls.name);
+
+        if (key in this.metadatas) {
+            return true;
+        }
+
+        const decoratorKeys = Reflect.ownKeys(this.decoratorRegistry.decorators);
+
+        return Boolean(decoratorKeys.filter(key => cls[key] instanceof Object).length);
     }
 }
 

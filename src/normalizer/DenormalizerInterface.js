@@ -20,7 +20,7 @@ export interface DenormalizerInterface {
      * @throws MethodNotImplementedException
      * @throws DenormalizationException
      */
-    denormalize(data: any, format: string, cls: Function, context: DeserializationContext): any;
+    denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext): any;
 
     /**
      * Checks whether the given class is supported for denormalization by this normalizer.
@@ -32,5 +32,5 @@ export interface DenormalizerInterface {
      *
      * @return {boolean}
      */
-    supportsDenormalization(data: any, format: string, cls: Function, context: DeserializationContext): boolean;
+    supportsDenormalization(data: any, format: string, cls: ?Function, context: DeserializationContext): boolean;
 }
