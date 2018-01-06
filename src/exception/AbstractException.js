@@ -4,7 +4,6 @@
  * @class AbstractException
  */
 class AbstractException extends Error {
-
     /**
      * AbstractException Constructor
      *

@@ -5,8 +5,6 @@ import AbstractException from './AbstractException';
  *
  * @class DenormalizationException
  */
-class DenormalizationException extends AbstractException {
-
-}
+class DenormalizationException extends AbstractException { }
 
 export default DenormalizationException;

@@ -6,6 +6,12 @@ import AbstractException from './AbstractException';
  * @class MethodNotImplementedException
  */
 class MethodNotImplementedException extends AbstractException {
+    /**
+     * MethodNotImplementedException Constructor
+     *
+     * @param className
+     * @constructor
+     */
     constructor(className) {
         super(`Method not implemented by "${className}"`);
     }

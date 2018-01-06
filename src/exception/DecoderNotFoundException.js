@@ -6,6 +6,12 @@ import AbstractException from './AbstractException';
  * @class DecoderNotFoundException
  */
 class DecoderNotFoundException extends AbstractException {
+    /**
+     * DecoderNotFoundException Constructor
+     *
+     * @param {string} format
+     * @constructor
+     */
     constructor(format) {
         super(`No decoder found for format "${format}"`);
     }
