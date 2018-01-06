@@ -13,6 +13,10 @@ class AbstractDecorator implements DecoratorInterface {
 
     /** @inheritDoc */
     getKey(): Symbol|string {
+        if (this.constructor === AbstractDecorator) {
+            throw new Error(`Invalid method call: getKey called directly on abstract not child`);
+        }
+
         if (!this.constructor.KEY) {
             Object.defineProperty(this.constructor, 'KEY', {
                 value: Symbol(this.constructor.name),
