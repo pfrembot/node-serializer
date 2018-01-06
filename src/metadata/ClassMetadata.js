@@ -20,6 +20,17 @@ class ClassMetadata {
     constructor(properties: PropertyMetadata[] = []) {
         properties.forEach(property => this[property.name] = property);
     }
+
+    /**
+     * Test if any of the class properties have been decorated
+     *
+     * @returns {boolean}
+     */
+    hasDecoratedProperties(): boolean {
+        const decoratedProperties = Object.keys(this).filter(key => this[key].decorators.length);
+
+        return Boolean(decoratedProperties.length);
+    }
 }
 
 export default ClassMetadata;

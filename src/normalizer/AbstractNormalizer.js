@@ -1,6 +1,6 @@
 // @flow
-import { NormalizerInterface } from "./NormalizerInterface";
-import { DenormalizerInterface } from "./DenormalizerInterface";
+import type { NormalizerInterface } from "./NormalizerInterface";
+import type { DenormalizerInterface } from "./DenormalizerInterface";
 import MetadataFactory from '../metadata/MetadataFactory';
 import NormalizerRegistry from './NormalizerRegistry';
 import MethodNotImplementedException from '../exception/MethodNotImplementedException';

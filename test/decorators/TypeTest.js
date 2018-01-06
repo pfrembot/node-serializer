@@ -1,12 +1,15 @@
 import assert from 'assert';
-import { Type } from '../../src/decorators';
-import { TypeKey } from '../../src/decorators/Type';
+import { Type as TypeDecorator } from '../../src/decorators';
+import { Type } from '../../src/decorators/Type';
+import 'reflect-metadata';
+import PropertyMetadata from "../../src/metadata/PropertyMetadata";
 
-describe('Type', () => {
-    const decorator = Type(Boolean);
+describe('TypeDecorator', () => {
+    const decorator = TypeDecorator(Boolean);
+    const type = new Type();
 
     it('should be an instance of Function', () => {
-        assert.equal(Type instanceof Function, true);
+        assert.equal(TypeDecorator instanceof Function, true);
     });
     it('should return an instance of Function when declared', () => {
         assert.equal(decorator instanceof Function, true);
@@ -14,11 +17,36 @@ describe('Type', () => {
     it('should decorate class with property type metadata when invoked', () => {
         const cls = class { property = true; };
         const property = 'property';
-        const descriptor = { writable: true, configurable: false, enumerable: true, value: true };
 
-        assert.strictEqual(decorator(cls, property, descriptor), descriptor);
-        assert.equal(cls.constructor[TypeKey] instanceof Object, true);
-        assert.equal(property in cls.constructor[TypeKey], true);
-        assert.strictEqual(cls.constructor[TypeKey][property], Boolean);
+        decorator(cls, property);
+
+        const metadata = Reflect.getMetadata(type.getKey(), cls, property);
+
+        assert.equal(metadata instanceof Type, true);
+        assert.strictEqual(metadata.type, Boolean);
+    });
+});
+
+describe('Type', () => {
+    const type = new Type(Boolean);
+
+    it('should be an instance of Type', () => {
+        assert.equal(type instanceof Type, true);
+    });
+
+    describe('#getKey()', () => {
+        it('should return a unique symbol tied to its class', () => {
+            assert.equal(typeof type.getKey() === 'symbol', true);
+            assert.strictEqual(type.getKey(), new Type().getKey());
+        });
+    });
+
+    describe('#apply()', () => {
+        it('should implement an appply method', () => {
+            const result = type.apply({ name: 'prop', value: 'true' });
+
+            assert.strictEqual(result.name, 'prop');
+            assert.strictEqual(result.value, true);
+        });
     });
 });

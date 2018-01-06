@@ -1,34 +1,35 @@
 // @flow
-import type { Decorator } from "./DecoratorRegistry";
-import type { DecoratorResult } from "./DecoratorRegistry";
+import type { DecoratorResult } from './DecoratorRegistry';
+import AbstractDecorator from './AbstractDecorator';
 
 /**
- * Type metadata property symbol to be used on the class
- * for storing property type metadata
+ * Type Class
  *
- * @constant {symbol}
- * @private
+ * @class Type
  */
-export const TypeKey = Symbol('gson:annotation:types');
+export class Type extends AbstractDecorator {
+    type: Function;
 
-/**
- * Invoked when processing a properties Type annotation
- *
- * Attempts to cast the current `result.value` into a value of the target type
- * defined in the properties decorator
- *
- * @param {DecoratorResult} result
- * @param {Decorator} decorator
- *
- * @returns {DecoratorResult}
- */
-export const TypeInvoker = (result: DecoratorResult, decorator: Decorator) => {
-    if (decorator.value instanceof Function) {
-        result.value = new decorator.value(result.value).valueOf();
+    /**
+     * SerializedName Constructor
+     *
+     * @param {Function} type Serialized name to use
+     */
+    constructor(type: Function) {
+        super();
+
+        this.type = type;
     }
 
-    return result;
-};
+    /** @inheritDoc */
+    apply(result: DecoratorResult) {
+        if (this.type instanceof Function) {
+            result.value = new this.type(result.value).valueOf();
+        }
+
+        return result;
+    }
+}
 
 /**
  * Type Decorator
@@ -39,13 +40,12 @@ export const TypeInvoker = (result: DecoratorResult, decorator: Decorator) => {
  * @target({"PROPERTY"})
  *
  * @param {Function} type
- * @returns {function(Function, String, Object)}
+ * @returns {Function}
  */
-export function Type<T>(type: T) {
-    return (target: Function, property: String, descriptor: Object) => {
-        target.constructor[TypeKey] = target.constructor[TypeKey] || {};
-        target.constructor[TypeKey][property] = type;
-
-        return descriptor;
-    };
+export default (type: Function) => {
+    return (target:Object, propertyKey:string) => {
+        const decorator = new Type(type);
+        // $FlowFixMe: reflect-metadata package not recognized
+        return Reflect.defineMetadata(decorator.getKey(), decorator, target, propertyKey);
+    }
 }

@@ -1,9 +1,10 @@
 // @flow
-import { NormalizerInterface } from './NormalizerInterface';
-import { DenormalizerInterface } from './DenormalizerInterface';
+import type { NormalizerInterface } from './NormalizerInterface';
+import type { DenormalizerInterface } from './DenormalizerInterface';
 import SerializationContext from '../SerializationContext';
 import DeserializationContext from '../DeserializationContext';
 import AbstractNormalizer from './AbstractNormalizer';
+import DenormalizationException from '../exception/DenormalizationException';
 
 /**
  * MetadataAwareNormalizer Class
@@ -14,11 +15,9 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
 
     /** @inheritDoc */
     normalize(data: any, format: string, context: SerializationContext) {
-        const classMetadata = this.metadataFactory.getClassMetadata(data.constructor);
-
         return Object.keys(data).reduce((result, key) => {
-            const propertyMetadata = classMetadata[key];
-            const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata);
+            const propertyMetadata = this.metadataFactory.getPropertyMetadata(data.constructor, key);
+            const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata, data[key]);
 
             // pass nested objects through to be normalized independently
             if (decorated.value instanceof Object) {
@@ -34,11 +33,13 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
 
     /** @inheritDoc */
     denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
-        const classMetadata = this.metadataFactory.getClassMetadata(data);
+        if (!(cls instanceof Function)) {
+            throw new DenormalizationException(`Normalizer does not support type "${typeof cls}"`);
+        }
 
         return Object.keys(data).reduce((result, key) => {
-            const propertyMetadata = classMetadata[key];
-            const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata);
+            const propertyMetadata = this.metadataFactory.getPropertyMetadata(cls || Object, key);
+            const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata, data[key]);
 
             // pass nested objects through to be de-normalized independently
             if (decorated.value instanceof Object) {

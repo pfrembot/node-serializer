@@ -1,6 +1,6 @@
 // @flow
 import EncoderNotFoundException from '../exception/EncoderNotFoundException';
-import { EncoderInterface } from './EncoderInterface';
+import type { EncoderInterface } from './EncoderInterface';
 import SerializationContext from '../SerializationContext';
 
 /**

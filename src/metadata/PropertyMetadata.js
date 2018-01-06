@@ -1,6 +1,5 @@
 // @flow
-
-import type { Decorator } from '../decorators/DecoratorRegistry';
+import type { DecoratorInterface } from "../decorators/DecoratorInterface";
 
 /**
  * PropertyMetadata Class
@@ -9,21 +8,18 @@ import type { Decorator } from '../decorators/DecoratorRegistry';
  */
 class PropertyMetadata {
     name: string;
-    descriptor: Object;
-    decorators: Decorator[] = [];
+    decorators: DecoratorInterface[] = [];
 
     /**
      * PropertyMetadata Constructor
      *
      * @param {string} property
-     * @param {Object} descriptor
      * @param {Decorator[]} decorators
      *
      * @constructor
      */
-    constructor(property: string, descriptor: Object, ...decorators: Decorator[]) {
+    constructor(property: string, ...decorators: DecoratorInterface[]) {
         this.name = property;
-        this.descriptor = descriptor;
         this.decorators = decorators;
     }
 

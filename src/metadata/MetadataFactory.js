@@ -2,19 +2,13 @@
 import ClassMetadata from './ClassMetadata';
 import PropertyMetadata from './PropertyMetadata';
 import DecoratorRegistry from '../decorators/DecoratorRegistry';
+import 'reflect-metadata';
 
 /**
- * Metadata CacheKey Property
+ * ClassMetadata CacheKey
  *
- * This is used to store a symbol that is unique to the target class with which we use as
- * the hash key in `MetadataFactory.metadatas` internal storage object.
- *
- * The reason is to ensure that we are using a unique hash key to cache class metadata to avoid the
- * possible edge case introduced by applications with multiple classes with the same name
- *
- * I had considered simply storing the metadata directly on the class constructor using this key,
- * but decided against in favor of internal storage to make testing simpler and avoid having
- * to export/expose the symbol
+ * Stores existing CacheMetadata for the target class
+ * in reflect-metadata storage
  *
  * @constant {symbol}
  */
@@ -26,12 +20,6 @@ const CacheKey = Symbol('gson:metadata:key');
  * @class MetadataFactory
  */
 class MetadataFactory {
-    /**
-     * Cached Class Metadata Storage
-     * @type {Object}
-     */
-    metadatas: { [Symbol]: ClassMetadata } = {};
-
     /**
      * Decorator Registry
      * @type {DecoratorRegistry}
@@ -54,28 +42,35 @@ class MetadataFactory {
      * serializer should handle class properties and data
      *
      * @param {Function} cls
-     * @returns {ClassMetadata}
+     * @returns {ClassMetadata|null}
      */
-    getClassMetadata(cls: Function) : ClassMetadata {
-        const key:any = cls[CacheKey] || Symbol(cls.name);
-
-        if (key in this.metadatas) {
-            return this.metadatas[key];
+    getClassMetadata(cls: ?Function) : ?ClassMetadata {
+        if (!(cls instanceof Function)) {
+            return null
         }
 
-        cls[CacheKey] = cls[CacheKey] || key;
+        // $FlowFixMe: reflect-metadata package not recognized
+        if (Reflect.hasMetadata(CacheKey, cls)) {
+            // $FlowFixMe: reflect-metadata package not recognized
+            return Reflect.getMetadata(CacheKey, cls);
+        }
 
         const instance = new cls(); // @todo: find a way to not call constructor here to avoid user-defined errors
         const instanceProps = Object.getOwnPropertyNames(instance);
         const decoratorKeys = Reflect.ownKeys(this.decoratorRegistry.decorators);
-        const properties = instanceProps.map(prop => {
-            const descriptor = Object.getOwnPropertyDescriptor(instance, prop);
-            const decorators = decoratorKeys.map(key => ({ key, value: cls[key][prop] } || undefined)).filter(Boolean);
 
-            return new PropertyMetadata(prop, descriptor, ...decorators);
+        const properties = instanceProps.map(prop => {
+            // $FlowFixMe: reflect-metadata package not recognized
+            const decorators = decoratorKeys.map(key => Reflect.getMetadata(key, cls.prototype, prop));
+            return new PropertyMetadata(prop, ...decorators.filter(Boolean));
         });
 
-        return this.metadatas[key] = new ClassMetadata(properties);
+        const classMetadata = new ClassMetadata(properties);
+
+        // $FlowFixMe: reflect-metadata package not recognized
+        Reflect.defineMetadata(CacheKey, classMetadata, cls);
+
+        return classMetadata;
     }
 
     /**
@@ -91,29 +86,22 @@ class MetadataFactory {
     getPropertyMetadata(cls: Function, prop: string) : PropertyMetadata {
         const classMetadata = this.getClassMetadata(cls);
 
-        return classMetadata[prop];
+        return classMetadata ? classMetadata[prop] : new PropertyMetadata(prop);
     }
 
     /**
      * Test if the target class has metadata associated with it
-     * which should be used during serialization
      *
-     * Currently this only includes classes that have registered decorators applied to them to
+     * Currently this *only* includes classes that have registered decorators applied to them to
      * avoid using a metadata-aware normalizer on generic or un-decorated data structures
      *
      * @param {Function} cls
      * @returns {boolean}
      */
     hasClassMetadata(cls: Function): boolean {
-        const key:any = cls[CacheKey] || Symbol(cls.name);
+        const metadata = this.getClassMetadata(cls);
 
-        if (key in this.metadatas) {
-            return true;
-        }
-
-        const decoratorKeys = Reflect.ownKeys(this.decoratorRegistry.decorators);
-
-        return Boolean(decoratorKeys.filter(key => cls[key] instanceof Object).length);
+        return Boolean(metadata && metadata.hasDecoratedProperties());
     }
 }
 

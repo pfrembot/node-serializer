@@ -1,5 +1,5 @@
 // @flow
-import { DecoderInterface } from './DecoderInterface';
+import type { DecoderInterface } from './DecoderInterface';
 import * as FormatType from '../FormatTypes';
 
 /**

@@ -1,6 +1,6 @@
 // @flow
 import DecoderNotFoundException from '../exception/DecoderNotFoundException';
-import { DecoderInterface } from "./DecoderInterface";
+import type { DecoderInterface } from "./DecoderInterface";
 
 /**
  * DecoderRegistry Class

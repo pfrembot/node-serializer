@@ -27,5 +27,7 @@
     "mocha": "^4.1.0",
     "nyc": "^11.4.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "reflect-metadata": "^0.1.10"
+  }
 }

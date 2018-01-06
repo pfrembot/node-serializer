@@ -1,5 +1,5 @@
 // @flow
-import { EncoderInterface } from './EncoderInterface';
+import type { EncoderInterface } from './EncoderInterface';
 import * as FormatType from '../FormatTypes';
 
 /**

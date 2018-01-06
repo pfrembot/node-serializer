@@ -9,8 +9,7 @@ import MetadataAwareNormalizer from '../src/normalizer/MetadataAwareNormalizer';
 import UndecoratedModel from './_fixtures/models/UndecoratedModel';
 import TypeDecoratedModel from './_fixtures/models/TypeDecoratedModel';
 import NestedModel from './_fixtures/models/NestedModel';
-import { Type } from '../src/decorators';
-import { TypeKey, TypeInvoker } from '../src/decorators/Type';
+import { Type } from '../src/decorators/Type';
 
 describe('Serializer', () => {
     const serializer = new Serializer();
@@ -77,7 +76,7 @@ describe('Serializer', () => {
         const serializer = new Serializer();
         const model = new TypeDecoratedModel();
 
-        serializer.decoratorRegistry.addDecorator(Type, TypeKey, TypeInvoker);
+        serializer.decoratorRegistry.addDecorator(new Type());
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
@@ -94,7 +93,7 @@ describe('Serializer', () => {
         const serializer = new Serializer();
         const model = new NestedModel();
 
-        serializer.decoratorRegistry.addDecorator(Type, TypeKey, TypeInvoker);
+        serializer.decoratorRegistry.addDecorator(new Type());
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());

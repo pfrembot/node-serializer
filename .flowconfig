@@ -12,10 +12,7 @@ flow/
 [lints]
 
 [options]
-suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
-suppress_type=$FlowFixMeProps
-suppress_type=$FlowFixMeState
 
 [version]
 ^0.62.0
