@@ -2,6 +2,8 @@
 import type { DecoratorInterface } from "./DecoratorInterface";
 import type { DecoratorResult } from "./DecoratorRegistry";
 import 'reflect-metadata';
+import SerializationContext from "../SerializationContext";
+import DeserializationContext from "../DeserializationContext";
 
 /**
  * AbstractDecorator Class
@@ -28,7 +30,7 @@ class AbstractDecorator implements DecoratorInterface {
     }
 
     /** @inheritDoc */
-    apply(result: DecoratorResult) {
+    apply(result: DecoratorResult, context: SerializationContext|DeserializationContext) {
         return result;
     }
 }

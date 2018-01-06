@@ -1,8 +1,10 @@
 import assert from 'assert';
 import { SerializedName as SerializedNameDecorator } from '../../src/decorators';
 import { SerializedName } from '../../src/decorators/SerializedName';
+import AbstractDecorator from '../../src/decorators/AbstractDecorator';
+import SerializationContext from '../../src/SerializationContext';
+import DeserializationContext from '../../src/DeserializationContext';
 import 'reflect-metadata';
-import AbstractDecorator from "../../src/decorators/AbstractDecorator";
 
 describe('SerializedNameDecorator', () => {
     const decorator = SerializedNameDecorator('foo');
@@ -46,10 +48,18 @@ describe('SerializedName', () => {
     });
 
     describe('#apply()', () => {
-        it('should implement an apply method', () => {
-            const result = serializedName.apply({ name: 'prop', value: 'true' });
+        it('should implement an apply method on serialization', () => {
+            const context = new SerializationContext();
+            const result = serializedName.apply({ name: 'prop', value: 'true' }, context);
 
             assert.strictEqual(result.name, 'foo'); // prop changed during apply
+            assert.strictEqual(result.value, 'true');
+        });
+        it('should implement an apply method on deserialization', () => {
+            const context = new DeserializationContext();
+            const result = serializedName.apply({ name: 'foo', value: 'true' }, context);
+
+            assert.strictEqual(result.name, 'prop'); // prop changed during apply
             assert.strictEqual(result.value, 'true');
         });
     });

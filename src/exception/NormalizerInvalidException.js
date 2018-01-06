@@ -13,22 +13,8 @@ class NormalizerInvalidException extends AbstractException {
      * @constructor
      */
     constructor(object) {
-        const type = NormalizerInvalidException.getObjectType(object);
+        const type = AbstractException.getObjectType(object);
         super(`Normalizer must be instance of AbstractNormalizer, got "${type}"`);
-    }
-
-    /**
-     * Return human friendly type as string
-     *
-     * @param {*} object
-     * @returns {string}
-     */
-    static getObjectType(object) {
-        if (object === null || object === undefined) {
-            return typeof object;
-        }
-
-        return object.constructor.name;
     }
 }
 

@@ -54,6 +54,9 @@ class DefaultNormalizer extends AbstractNormalizer {
     denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
         const type = data !== null ? typeof data : 'null';
 
+        // ensure cls is valid constructor
+        cls = cls instanceof Function ? cls : Object;
+
         switch (type) {
             case 'null':
             case 'string':
@@ -63,7 +66,7 @@ class DefaultNormalizer extends AbstractNormalizer {
                 return data;
             case 'object':
                 const keys = Object.keys(data);
-                const result = Array.isArray(data) ? [] : {};
+                const result = Array.isArray(data) ? [] : new cls();
 
                 return keys.reduce((result, key) => {
                     const value = data[key];
@@ -75,7 +78,7 @@ class DefaultNormalizer extends AbstractNormalizer {
                 }, result);
         }
 
-        throw DenormalizationException(`Unable to normalize type "${type}"`);
+        throw new DenormalizationException(`Unable to normalize type "${type}"`);
     }
 
     /** @inheritDoc */

@@ -9,19 +9,9 @@ describe('AbstractDecorator', () => {
     });
 
     describe('#getKey()', () => {
-
         it('should throw an error when getKey called directly on abstract', () => {
             assert.throws(() => decorator.getKey());
         });
-
-        // const key = decorator.getKey();
-        //
-        // it('should return a unique symbol as key', () => {
-        //     assert(typeof key === 'symbol');
-        // });
-        // it('should return the same key from all instances', () => {
-        //     assert.strictEqual(key, new AbstractDecorator().getKey());
-        // });
     });
 
     describe('#apply', () => {

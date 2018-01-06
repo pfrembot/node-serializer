@@ -1,8 +1,11 @@
 import assert from 'assert';
 import { Type as TypeDecorator } from '../../src/decorators';
 import { Type } from '../../src/decorators/Type';
+import AbstractDecorator from '../../src/decorators/AbstractDecorator';
+import SerializationContext from '../../src/SerializationContext';
+import DeserializationContext from '../../src/DeserializationContext';
+import UndecoratedModel from '../_fixtures/models/UndecoratedModel';
 import 'reflect-metadata';
-import AbstractDecorator from "../../src/decorators/AbstractDecorator";
 
 describe('TypeDecorator', () => {
     const decorator = TypeDecorator(Boolean);
@@ -46,11 +49,37 @@ describe('Type', () => {
     });
 
     describe('#apply()', () => {
-        it('should implement an apply method', () => {
-            const result = type.apply({ name: 'prop', value: 'true' });
+        it('should implement an apply method on serialization', () => {
+            const context = new SerializationContext();
+            const result = type.apply({ name: 'prop', value: 'true' }, context);
 
             assert.strictEqual(result.name, 'prop');
             assert.strictEqual(result.value, true); // type cast during apply
+        });
+        it('should implement an apply method on deserialization', () => {
+            const context = new DeserializationContext();
+            const result = type.apply({ name: 'prop', value: 'true' }, context);
+
+            assert.strictEqual(result.name, 'prop');
+            assert.strictEqual(result.value, true); // type cast during apply
+        });
+        it('should override normalized result.value constructor on deserialization of non-scalars', () => {
+            const type = new Type(UndecoratedModel);
+            const context = new DeserializationContext();
+            const result = type.apply({ name: 'prop', value: { propA: 'true' } }, context);
+
+            assert(result.value instanceof UndecoratedModel);
+            assert.strictEqual(result.value.constructor, UndecoratedModel);
+            assert.deepEqual(result.value, { propA: 'true' });
+        });
+        it('should return an un-modified result object when type.type not a function', () => {
+            const context = new SerializationContext();
+            const result = { name: 'prop', value: 'true' };
+
+            assert.strictEqual(new Type().apply(result, context), result);
+            assert.strictEqual(new Type(null).apply(result, context), result);
+            assert.strictEqual(new Type({}).apply(result, context), result);
+            assert.strictEqual(new Type([]).apply(result, context), result);
         });
     });
 });

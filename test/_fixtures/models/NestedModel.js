@@ -1,9 +1,11 @@
 import UndecoratedModel from './UndecoratedModel';
 import TypeDecoratedModel from './TypeDecoratedModel';
+import { Type } from '../../../src/decorators';
 
 class NestedModel {
     propA = 'propA';
     propB = undefined;
+    @Type(TypeDecoratedModel)
     propC = undefined;
 
     constructor() {

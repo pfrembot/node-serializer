@@ -1,5 +1,9 @@
 // @flow
 import type { DecoratorResult } from "./DecoratorRegistry";
+import SerializationContext from "../SerializationContext";
+import DeserializationContext from "../DeserializationContext";
+
+export type Context = SerializationContext|DeserializationContext;
 
 /**
  * DecoratorInterface Interface
@@ -33,9 +37,10 @@ export interface DecoratorInterface {
      * then be passed on to the next decorator's apply method and so on... until all decorator logic
      * has been applied.
      *
-     * @param {DecoratorResult} result
+     * @param {DecoratorResult} result  Current decorated result object
+     * @param {Context}         context Current serialization context
      *
      * @returns {DecoratorResult}
      */
-    apply(result: DecoratorResult): DecoratorResult;
+    apply(result: DecoratorResult, context: Context): DecoratorResult;
 }

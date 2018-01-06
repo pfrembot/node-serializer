@@ -27,22 +27,22 @@ describe('DefaultNormalizer', () => {
 
     describe('#normalize', () => {
         it('should should return properly normalized void', () => {
-            assert.equal(normalizer.normalize(void 0, 'json'), void 0);
+            assert.strictEqual(normalizer.normalize(void 0, 'json'), void 0);
         });
         it('should should return properly normalized null', () => {
-            assert.equal(normalizer.normalize(null, 'json'), null);
+            assert.strictEqual(normalizer.normalize(null, 'json'), null);
         });
         it('should should return properly normalized boolean', () => {
-            assert.equal(normalizer.normalize(true, 'json'), true);
+            assert.strictEqual(normalizer.normalize(true, 'json'), true);
         });
         it('should should return properly normalized integer', () => {
-            assert.equal(normalizer.normalize(123, 'json'), 123);
+            assert.strictEqual(normalizer.normalize(123, 'json'), 123);
         });
         it('should should return properly normalized float', () => {
-            assert.equal(normalizer.normalize(123.45, 'json'), 123.45);
+            assert.strictEqual(normalizer.normalize(123.45, 'json'), 123.45);
         });
         it('should should return properly normalized string', () => {
-            assert.equal(normalizer.normalize("foo", 'json'), "foo");
+            assert.strictEqual(normalizer.normalize("foo", 'json'), "foo");
         });
         it('should should return properly normalized empty array', () => {
             assert.deepEqual(normalizer.normalize([], 'json'), []);
@@ -64,22 +64,22 @@ describe('DefaultNormalizer', () => {
 
     describe('#denormalize', () => {
         it('should should return properly denormalized void', () => {
-            assert.equal(normalizer.denormalize(void 0, 'json'), void 0);
+            assert.strictEqual(normalizer.denormalize(void 0, 'json'), void 0);
         });
         it('should should return properly denormalized null', () => {
-            assert.equal(normalizer.denormalize(null, 'json', null), null);
+            assert.strictEqual(normalizer.denormalize(null, 'json', null), null);
         });
         it('should should return properly denormalized boolean', () => {
-            assert.equal(normalizer.denormalize(true, 'json', Boolean), true);
+            assert.strictEqual(normalizer.denormalize(true, 'json', Boolean), true);
         });
         it('should should return properly denormalized integer', () => {
-            assert.equal(normalizer.denormalize(123, 'json', Number), 123);
+            assert.strictEqual(normalizer.denormalize(123, 'json', Number), 123);
         });
         it('should should return properly denormalized float', () => {
-            assert.equal(normalizer.denormalize(123.45, 'json', Number), 123.45);
+            assert.strictEqual(normalizer.denormalize(123.45, 'json', Number), 123.45);
         });
         it('should should return properly denormalized string', () => {
-            assert.equal(normalizer.denormalize("foo", 'json', String), "foo");
+            assert.strictEqual(normalizer.denormalize("foo", 'json', String), "foo");
         });
         it('should should return properly denormalized empty array', () => {
             assert.deepEqual(normalizer.denormalize([], 'json', Array), []);

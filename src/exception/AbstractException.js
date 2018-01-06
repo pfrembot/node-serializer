@@ -46,6 +46,20 @@ class AbstractException extends Error {
     toString() {
         return this.stack;
     }
+
+    /**
+     * Helper method to return human readable type
+     *
+     * @param {*} object
+     * @returns {string}
+     */
+    static getObjectType(object) {
+        if (object === null || object === undefined) {
+            return typeof object;
+        }
+
+        return object.constructor.name;
+    }
 }
 
 export default AbstractException;

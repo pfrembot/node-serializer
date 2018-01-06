@@ -107,6 +107,6 @@ describe('Serializer', () => {
     });
 
     describe('#deserialize()', () => {
-
+        it('should have some tests here');
     });
 });

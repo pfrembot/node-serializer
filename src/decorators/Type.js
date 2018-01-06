@@ -1,6 +1,14 @@
 // @flow
 import type { DecoratorResult } from './DecoratorRegistry';
 import AbstractDecorator from './AbstractDecorator';
+import SerializationContext from '../SerializationContext';
+import DeserializationContext from '../DeserializationContext';
+
+function isScalar(value) {
+    return !(value instanceof Object)
+        && !(value instanceof Array)
+    ;
+}
 
 /**
  * Type Class
@@ -22,10 +30,16 @@ export class Type extends AbstractDecorator {
     }
 
     /** @inheritDoc */
-    apply(result: DecoratorResult) {
-        if (this.type instanceof Function) {
-            result.value = new this.type(result.value).valueOf();
+    apply(result: DecoratorResult, context: SerializationContext|DeserializationContext) {
+        if (!(this.type instanceof Function)) {
+            return result;
         }
+
+        if (isScalar(result.value))
+            result.value = new this.type(result.value).valueOf();
+
+        if (context instanceof DeserializationContext && !isScalar(result.value))
+            Object.setPrototypeOf(result.value, this.type.prototype);
 
         return result;
     }

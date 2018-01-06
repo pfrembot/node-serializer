@@ -2,6 +2,7 @@ import assert from 'assert';
 import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 import PropertyMetadata from '../../src/metadata/PropertyMetadata';
 import AbstractDecorator from '../../src/decorators/AbstractDecorator';
+import DecoratorInvalidException from '../../src/exception/DecoratorInvalidException';
 import { Type } from "../../src/decorators/Type";
 
 describe('DecoratorRegistry', () => {
@@ -14,6 +15,10 @@ describe('DecoratorRegistry', () => {
     describe('#addDecorator', () => {
         const decoratorRegistry = new DecoratorRegistry();
 
+        it('should throw an exception when attempting to add invalid decorator', () => {
+            assert.throws(() => decoratorRegistry.addDecorator(null), DecoratorInvalidException);
+            assert.throws(() => decoratorRegistry.addDecorator({}), DecoratorInvalidException);
+        });
         it('should add a decorator object at target key on the internal storage', () => {
             const decorator = new class extends AbstractDecorator {};
 

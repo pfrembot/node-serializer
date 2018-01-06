@@ -1,6 +1,8 @@
 // @flow
 import PropertyMetadata from '../metadata/PropertyMetadata';
-import type { DecoratorInterface } from "./DecoratorInterface";
+import type { DecoratorInterface, Context } from './DecoratorInterface';
+import AbstractDecorator from './AbstractDecorator';
+import DecoratorInvalidException from '../exception/DecoratorInvalidException';
 
 export type DecoratorKey = string|Symbol;
 export type DecoratorResult = { name: string, value: any }
@@ -28,8 +30,14 @@ class DecoratorRegistry {
      * @param {DecoratorInterface} decorator
      *
      * @return void
+     *
+     * @throws DecoratorInvalidException
      */
     addDecorator(decorator: DecoratorInterface) {
+        if (!(decorator instanceof AbstractDecorator)) {
+            throw new DecoratorInvalidException(decorator);
+        }
+
         this.decorators[decorator.getKey()] = decorator;
     }
 
@@ -42,10 +50,11 @@ class DecoratorRegistry {
      *
      * @param {PropertyMetadata} property
      * @param {*} value
+     * @param {Context} context
      *
      * @returns {DecoratorResult|{name: string, value: *}}
      */
-    applyDecorators(property: PropertyMetadata, value: any): DecoratorResult {
+    applyDecorators(property: PropertyMetadata, value: any, context: Context): DecoratorResult {
         const name = property.name;
         const decorators = property.getDecorators();
 
@@ -55,7 +64,7 @@ class DecoratorRegistry {
                 return result;
             }
 
-            return decorator.apply(result) || result;
+            return decorator.apply(result, context) || result;
         }, { name, value });
     }
 }

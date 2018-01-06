@@ -1,6 +1,8 @@
 // @flow
 import AbstractDecorator from './AbstractDecorator';
-import type { DecoratorResult } from "./DecoratorRegistry";
+import type { DecoratorResult } from './DecoratorRegistry';
+import SerializationContext from '../SerializationContext';
+import DeserializationContext from '../DeserializationContext';
 import 'reflect-metadata';
 
 /**
@@ -26,9 +28,9 @@ export class SerializedName extends AbstractDecorator {
     }
 
     /** @inheritDoc */
-    apply(result: DecoratorResult) {
-        if (result.name === this.name) result.name = this.property; // assume deserialize context
-        if (result.name === this.property) result.name = this.name; // assume serialize context
+    apply(result: DecoratorResult, context: SerializationContext|DeserializationContext) {
+        if (context instanceof SerializationContext) result.name = this.name;
+        if (context instanceof DeserializationContext) result.name = this.property;
 
         return result;
     }
