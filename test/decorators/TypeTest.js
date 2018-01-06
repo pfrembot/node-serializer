@@ -2,7 +2,7 @@ import assert from 'assert';
 import { Type as TypeDecorator } from '../../src/decorators';
 import { Type } from '../../src/decorators/Type';
 import 'reflect-metadata';
-import PropertyMetadata from "../../src/metadata/PropertyMetadata";
+import AbstractDecorator from "../../src/decorators/AbstractDecorator";
 
 describe('TypeDecorator', () => {
     const decorator = TypeDecorator(Boolean);
@@ -15,8 +15,8 @@ describe('TypeDecorator', () => {
         assert.equal(decorator instanceof Function, true);
     });
     it('should decorate class with property type metadata when invoked', () => {
-        const cls = class { property = true; };
         const property = 'property';
+        const cls = class { [property] = true; };
 
         decorator(cls, property);
 
@@ -35,18 +35,22 @@ describe('Type', () => {
     });
 
     describe('#getKey()', () => {
+        it('should not throw an error when invoked', () => {
+            assert.doesNotThrow(() => type.getKey());
+        });
         it('should return a unique symbol tied to its class', () => {
             assert.equal(typeof type.getKey() === 'symbol', true);
             assert.strictEqual(type.getKey(), new Type().getKey());
+            assert.notStrictEqual(type.getKey(), (new class extends AbstractDecorator {}).getKey());
         });
     });
 
     describe('#apply()', () => {
-        it('should implement an appply method', () => {
+        it('should implement an apply method', () => {
             const result = type.apply({ name: 'prop', value: 'true' });
 
             assert.strictEqual(result.name, 'prop');
-            assert.strictEqual(result.value, true);
+            assert.strictEqual(result.value, true); // type cast during apply
         });
     });
 });

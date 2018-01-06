@@ -62,6 +62,31 @@ describe('AbstractNormalizer', () => {
         });
     });
 
+    describe('#get decoratorRegistry', () => {
+        const normalizer = new AbstractNormalizer();
+        const decoratorRegistry = new DecoratorRegistry();
+
+        it('should throw exception if decoratorRegistry not set', () => {
+            assert.throws(() => { normalizer.decoratorRegistry }, Error);
+        });
+        it('should return an instance of DecoratorRegistry', () => {
+            normalizer.decoratorRegistry = decoratorRegistry;
+
+            assert.equal(normalizer.decoratorRegistry instanceof DecoratorRegistry, true);
+            assert.strictEqual(normalizer.decoratorRegistry, decoratorRegistry)
+        });
+    });
+
+    describe('#set decoratorRegistry', () => {
+        const normalizer = new AbstractNormalizer();
+        const decoratorRegistry = new DecoratorRegistry();
+
+        it('should set normalizerRegistry without error', () => {
+            assert.doesNotThrow(() => normalizer.decoratorRegistry = decoratorRegistry);
+            assert.strictEqual(normalizer._decoratorRegistry, decoratorRegistry);
+        });
+    });
+
     describe('#normalize', () => {
         const normalizer = new AbstractNormalizer();
 

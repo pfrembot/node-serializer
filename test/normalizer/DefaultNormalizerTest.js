@@ -6,7 +6,8 @@ import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 
 describe('DefaultNormalizer', () => {
     const normalizer = new DefaultNormalizer();
-    const metadataFactory = new MetadataFactory(new DecoratorRegistry());
+    const decoratorRegistry = new DecoratorRegistry();
+    const metadataFactory = new MetadataFactory(decoratorRegistry);
     const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
     normalizerRegistry.addNormalizer(normalizer);
@@ -19,6 +20,9 @@ describe('DefaultNormalizer', () => {
     });
     it('should contain a reference to the normalizerRegistry', () => {
         assert.strictEqual(normalizer.normalizerRegistry, normalizerRegistry);
+    });
+    it('should contain a reference to the normalizerRegistry', () => {
+        assert.strictEqual(normalizer.decoratorRegistry, decoratorRegistry);
     });
 
     describe('#normalize', () => {
@@ -52,6 +56,10 @@ describe('DefaultNormalizer', () => {
         it('should should return properly normalized not empty object', () => {
             assert.deepEqual(normalizer.normalize({ foo: 1, bar: 2, baz: [1, 2, 3]}, 'json'), { foo: 1, bar: 2, baz: [1, 2, 3]});
         });
+        it('should throw an exception when encountering an unknown type', () => {
+            assert.throws(() => normalizer.normalize(function() {}));
+            assert.throws(() => normalizer.normalize(Symbol()));
+        });
     });
 
     describe('#denormalize', () => {
@@ -84,6 +92,10 @@ describe('DefaultNormalizer', () => {
         });
         it('should should return properly denormalized not empty object', () => {
             assert.deepEqual(normalizer.denormalize({ foo: 1, bar: 2, baz: [1, 2, 3]}, 'json', Object), { foo: 1, bar: 2, baz: [1, 2, 3]});
+        });
+        it('should throw an exception when encountering an unknown type', () => {
+            assert.throws(() => normalizer.denormalize(function() {}));
+            assert.throws(() => normalizer.denormalize(Symbol()));
         });
     });
 

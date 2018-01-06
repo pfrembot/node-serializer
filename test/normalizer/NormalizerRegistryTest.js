@@ -5,6 +5,7 @@ import DecoratorRegistry from '../../src/decorators/DecoratorRegistry';
 import DefaultNormalizer from "../../src/normalizer/DefaultNormalizer";
 import NormalizerInvalidException from '../../src/exception/NormalizerInvalidException';
 import NormalizerNotFoundException from '../../src/exception/NormalizerNotFoundException';
+import AbstractNormalizer from "../../src/normalizer/AbstractNormalizer";
 
 describe('NormalizerRegistry', () => {
     const normalizerRegistry = new NormalizerRegistry();
@@ -29,6 +30,7 @@ describe('NormalizerRegistry', () => {
         it('should throw an error when adding something which doesn\'t extend AbstractNormalizer', () => {
             assert.throws(() => normalizerRegistry.addNormalizer(), NormalizerInvalidException);
             assert.throws(() => normalizerRegistry.addNormalizer({}), NormalizerInvalidException);
+            assert.throws(() => normalizerRegistry.addNormalizer(1), NormalizerInvalidException)
         });
         it('should add the normalizer to the normalizerRegistry', () => {
             const normalizer = new DefaultNormalizer();
@@ -41,7 +43,7 @@ describe('NormalizerRegistry', () => {
     });
 
     describe('#getNormalizer', () => {
-        const normalizer = new DefaultNormalizer();
+        const defaultNormalizer = new DefaultNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
@@ -50,18 +52,29 @@ describe('NormalizerRegistry', () => {
         });
 
         it('should return the default normalizer since no others have been added', () => {
-            normalizerRegistry.addNormalizer(normalizer);
-            assert.strictEqual(normalizerRegistry.getNormalizer({}, 'json'), normalizer);
+            normalizerRegistry.addNormalizer(defaultNormalizer);
+            assert.strictEqual(normalizerRegistry.getNormalizer({}, 'json'), defaultNormalizer);
         });
+        it('should allow me to add additional normalizers to the registry', () => {
+            const normalizer = new class extends AbstractNormalizer {};
 
-        // @TODO: add more normalizers
-        it('should allow me to add additional normalizers to the registry');
-        it('should return the INSERT_NAME normalizer matching the required data/format type');
-        it('should return the default normalizer since required data/format type couldn\'t be matched');
+            assert.doesNotThrow(() => normalizerRegistry.addNormalizer(normalizer));
+        });
+        it('should return the anon_1 normalizer matching the required data/format type', () => {
+            const normalizer = new class extends AbstractNormalizer {
+                supportsNormalization(data, format) { return format === 'anon_1'; }
+            };
+
+            normalizerRegistry.addNormalizer(normalizer);
+            assert.strictEqual(normalizerRegistry.getNormalizer({}, 'anon_1'), normalizer);
+        });
+        it('should return the default normalizer since required data/format type couldn\'t be matched', () => {
+            assert.strictEqual(normalizerRegistry.getNormalizer({}, 'noop'), defaultNormalizer);
+        });
     });
 
     describe('#getDenormalizer', () => {
-        const normalizer = new DefaultNormalizer();
+        const defaultNormalizer = new DefaultNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
@@ -70,13 +83,24 @@ describe('NormalizerRegistry', () => {
         });
 
         it('should return the default normalizer since no others have been added', () => {
-            normalizerRegistry.addNormalizer(normalizer);
-            assert.strictEqual(normalizerRegistry.getDenormalizer({}, 'json', Object), normalizer);
+            normalizerRegistry.addNormalizer(defaultNormalizer);
+            assert.strictEqual(normalizerRegistry.getDenormalizer({}, 'json', Object), defaultNormalizer);
         });
+        it('should allow me to add additional normalizers to the registry', () => {
+            const normalizer = new class extends AbstractNormalizer {};
 
-        // @TODO: add more normalizers
-        it('should allow me to add additional normalizers to the registry');
-        it('should return the INSERT_NAME normalizer matching the required data/format type');
-        it('should return the default normalizer since required data/format type couldn\'t be matched');
+            assert.doesNotThrow(() => normalizerRegistry.addNormalizer(normalizer));
+        });
+        it('should return the anon_1 normalizer matching the required data/format type', () => {
+            const normalizer = new class extends AbstractNormalizer {
+                supportsDenormalization(data, format) { return format === 'anon_1'; }
+            };
+
+            normalizerRegistry.addNormalizer(normalizer);
+            assert.strictEqual(normalizerRegistry.getDenormalizer({}, 'anon_1'), normalizer);
+        });
+        it('should return the default normalizer since required data/format type couldn\'t be matched', () => {
+            assert.strictEqual(normalizerRegistry.getDenormalizer({}, 'noop'), defaultNormalizer);
+        });
     });
 });
