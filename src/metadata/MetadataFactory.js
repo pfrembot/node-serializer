@@ -44,9 +44,9 @@ class MetadataFactory {
      * @param {Function} cls
      * @returns {ClassMetadata|null}
      */
-    getClassMetadata(cls: ?Function) : ?ClassMetadata {
+    getClassMetadata(cls: ?Function) : ClassMetadata {
         if (!(cls instanceof Function)) {
-            return null
+            return new ClassMetadata();
         }
 
         // $FlowFixMe: reflect-metadata package not recognized
@@ -99,9 +99,7 @@ class MetadataFactory {
      * @returns {boolean}
      */
     hasClassMetadata(cls: Function): boolean {
-        const metadata = this.getClassMetadata(cls);
-
-        return Boolean(metadata && metadata.hasDecoratedProperties());
+        return this.getClassMetadata(cls).hasDecoratedProperties();
     }
 }
 

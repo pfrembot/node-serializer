@@ -46,14 +46,14 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
             throw new DenormalizationException(`MetadataAwareNormalizer does not support type "${typeof cls}"`);
         }
 
-        return Object.keys(data).reduce((result, key) => {
-            const propertyMetadata = this.metadataFactory.getPropertyMetadata(cls || Object, key);
-            const decorated = propertyMetadata instanceof PropertyMetadata
-                ? this.decoratorRegistry.applyDecorators(propertyMetadata, data[key], context)
-                : { name: key, value: data[key] } // stub in valid result to allow normal flow
-            ;
+        const classMetadata = this.metadataFactory.getClassMetadata(cls);
+        const serializationContext = new SerializationContext(data, format);
 
-            // pass nested objects through to be de-normalized independently
+        return Object.keys(classMetadata).reduce((result, key) => {
+            const propertyMetadata = classMetadata[key];
+            const serializedKey = this._getSerializedKey(propertyMetadata, serializationContext);
+            const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata, data[serializedKey], context);
+
             if (decorated.value instanceof Object) {
                 const args = [ decorated.value, format, decorated.value.constructor, context ];
                 result[decorated.name] = this.normalizerRegistry.getDenormalizer(...args).denormalize(...args);
@@ -63,6 +63,22 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
 
             return result;
         }, new cls()); // @todo: need to instantiate class without using constructor
+    }
+
+    /**
+     * In order to deserialize properties that may have undergone a change in their name
+     * we must first serialize the property name to determine what key we should be using in
+     * the data to be deserialized
+     *
+     * @private
+     *
+     * @param {PropertyMetadata} propertyMetadata
+     * @param {SerializationContext} serializationContext
+     *
+     * @returns {string}
+     */
+    _getSerializedKey(propertyMetadata: PropertyMetadata, serializationContext: SerializationContext) {
+        return this.decoratorRegistry.applyDecorators(propertyMetadata, null, serializationContext).name;
     }
 
     /** @inheritDoc */

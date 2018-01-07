@@ -151,18 +151,6 @@ describe('MetadataAwareNormalizer', () => {
             assert.strictEqual(result.propB, 4);
             assert.strictEqual(result.propC, 'foo');
         });
-        it('should still return properly denormalized Object if invoked manually', () => {
-            const data = { propA: false, propB: 4, propC: 'foo' };
-            const context = new DeserializationContext(data, 'json');
-
-            // normally this would never happen because model doesn't pass supportsDenormalization()
-            const result = normalizer.denormalize(data, 'json', Object, context);
-
-            assert(result instanceof Object);
-            assert.strictEqual(result.propA, false);
-            assert.strictEqual(result.propB, 4);
-            assert.strictEqual(result.propC, 'foo');
-        });
         it('should return properly denormalized data for nested class object', () => {
             const propB = { propA: false, propB: 321, propC: 'foo' };
             const propC = { propA: 'true', propB: '123', propC: 'bar' };

@@ -27,6 +27,9 @@ describe('MetadataFactory', () => {
         it('should be an instance of ClassMetadata', () => {
             assert.equal(metadata instanceof ClassMetadata, true);
         });
+        it('should return empty ClassMetadata instance for invalid classes', () => {
+            assert(metadataFactory.getClassMetadata(null) instanceof ClassMetadata);
+        });
         it('should be cached inside reflect-metadata storage', () => {
             const keys = Reflect.getMetadataKeys(TypeDecoratedModel);
 
