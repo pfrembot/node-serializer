@@ -70,10 +70,11 @@ class DefaultNormalizer extends AbstractNormalizer {
 
                 return keys.reduce((result, key) => {
                     const value = data[key];
-                    const denormalizer = this.normalizerRegistry.getDenormalizer(value, format, cls, context);
+                    const constructor = value && value.constructor ? value.constructor : undefined;
+                    const denormalizer = this.normalizerRegistry.getDenormalizer(value, format, constructor, context);
 
                     // @todo: need a way to determine the correct class to use (e.x. { foo: FooClass } or FooClass[])
-                    result[key] = denormalizer.denormalize(value, format, cls, context);
+                    result[key] = denormalizer.denormalize(value, format, constructor, context);
                     return result;
                 }, result);
         }
