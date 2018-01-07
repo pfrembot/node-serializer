@@ -13,14 +13,14 @@ describe('SerializationContext', () => {
             const data = {};
             const context = new SerializationContext(data, 'json');
 
-            assert.equal(context.format, 'json');
+            assert.strictEqual(context.format, 'json');
             assert.strictEqual(context.data, data);
         });
         it('should optionally accept an additional options argument', () => {
             const options = { foo: true };
             const context = new SerializationContext({}, 'json', options);
 
-            assert.equal(context.foo, true);
+            assert.strictEqual(context.foo, true);
         });
         it('should set data and format properties to be read-only', () => {
             const data = {};
@@ -29,7 +29,7 @@ describe('SerializationContext', () => {
             assert.throws(() => context.data = false);
             assert.throws(() => context.format = false);
 
-            assert.equal(context.format, 'json');
+            assert.strictEqual(context.format, 'json');
             assert.strictEqual(context.data, data);
         });
     });

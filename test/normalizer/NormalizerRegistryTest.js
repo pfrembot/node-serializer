@@ -37,7 +37,7 @@ describe('NormalizerRegistry', () => {
 
             normalizerRegistry.addNormalizer(normalizer);
 
-            assert.equal(normalizerRegistry.normalizers.length, 1);
+            assert.strictEqual(normalizerRegistry.normalizers.length, 1);
             assert.strictEqual(normalizerRegistry.normalizers[0], normalizer);
         });
     });

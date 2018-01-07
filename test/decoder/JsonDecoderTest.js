@@ -13,18 +13,18 @@ describe('JsonDecoder', () => {
 
         it('should be an Object with decoded data', () => {
             assert(data instanceof Object);
-            assert.equal(data.propA, true);
-            assert.equal(data.propB, 3);
-            assert.equal(data.propC, "test");
+            assert.strictEqual(data.propA, true);
+            assert.strictEqual(data.propB, 3);
+            assert.strictEqual(data.propC, "test");
         });
     });
 
     describe('#supportsDecoding', () => {
         it('should return true to json format', () => {
-            assert.equal(decoder.supportsDecoding('json'), true);
+            assert.strictEqual(decoder.supportsDecoding('json'), true);
         });
         it('should return true to non json format', () => {
-            assert.equal(decoder.supportsDecoding('xml'), false);
+            assert.strictEqual(decoder.supportsDecoding('xml'), false);
         });
     });
 });

@@ -9,7 +9,7 @@ describe('AbstractException', () => {
     });
     it('should contain a message describing the error', () => {
         assert('message' in exception);
-        assert.equal(exception.message, 'oops!');
+        assert.strictEqual(exception.message, 'oops!');
     });
     it('should contain a name for reference', () => {
         assert('name' in exception);
@@ -22,18 +22,18 @@ describe('AbstractException', () => {
         it('should have property name equal to the exception class', () => {
             const exception = new class CustomException extends AbstractException {};
 
-            assert.equal(exception.name, 'CustomException');
+            assert.strictEqual(exception.name, 'CustomException');
         });
         it('should begin stack trace with the name of the exception thrown', () => {
             const exception = new class CustomException extends AbstractException {};
 
-            assert.equal(exception.stack.substring(0, 15), 'CustomException');
+            assert.strictEqual(exception.stack.substring(0, 15), 'CustomException');
         });
         it('should contain a stacktrace beginning with the custom exception name and message', () => {
             const CustomException2 = class CustomException extends AbstractException {};
             const exception = new CustomException2('oops! error occurred');
 
-            assert.equal(exception.stack.substring(0, 38), 'CustomException: oops! error occurred\n')
+            assert.strictEqual(exception.stack.substring(0, 38), 'CustomException: oops! error occurred\n')
         });
     });
 
@@ -41,8 +41,8 @@ describe('AbstractException', () => {
         it('should return a stacktrace as string', () => {
             const exception = new AbstractException();
 
-            assert.equal(typeof exception.toString(), 'string');
-            assert.equal(exception.toString(), exception.stack)
+            assert.strictEqual(typeof exception.toString(), 'string');
+            assert.strictEqual(exception.toString(), exception.stack)
         });
     });
 });

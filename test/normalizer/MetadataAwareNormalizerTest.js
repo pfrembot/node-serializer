@@ -179,41 +179,41 @@ describe('MetadataAwareNormalizer', () => {
 
     describe('#supportsNormalization', () => {
         it('should return false for built-in data types', () => {
-            assert.equal(normalizer.supportsNormalization(null), false);
-            assert.equal(normalizer.supportsNormalization(undefined), false);
-            assert.equal(normalizer.supportsNormalization(true), false);
-            assert.equal(normalizer.supportsNormalization("foo"), false);
-            assert.equal(normalizer.supportsNormalization(123), false);
-            assert.equal(normalizer.supportsNormalization(123.45), false);
-            assert.equal(normalizer.supportsNormalization([]), false);
-            assert.equal(normalizer.supportsNormalization({}), false);
+            assert.strictEqual(normalizer.supportsNormalization(null), false);
+            assert.strictEqual(normalizer.supportsNormalization(undefined), false);
+            assert.strictEqual(normalizer.supportsNormalization(true), false);
+            assert.strictEqual(normalizer.supportsNormalization("foo"), false);
+            assert.strictEqual(normalizer.supportsNormalization(123), false);
+            assert.strictEqual(normalizer.supportsNormalization(123.45), false);
+            assert.strictEqual(normalizer.supportsNormalization([]), false);
+            assert.strictEqual(normalizer.supportsNormalization({}), false);
         });
         it('should return false for data with no class metadata', () => {
-            assert.equal(normalizer.supportsNormalization(new class Foo {}), false);
-            assert.equal(normalizer.supportsNormalization(new UndecoratedModel()), false);
+            assert.strictEqual(normalizer.supportsNormalization(new class Foo {}), false);
+            assert.strictEqual(normalizer.supportsNormalization(new UndecoratedModel()), false);
         });
         it('should return true for data with class metadata', () => {
-            assert.equal(normalizer.supportsNormalization(new TypeDecoratedModel()), true);
+            assert.strictEqual(normalizer.supportsNormalization(new TypeDecoratedModel()), true);
         });
     });
 
     describe('#supportsDenormalization', () => {
         it('should return false for built-in data types', () => {
-            assert.equal(normalizer.supportsDenormalization(null, 'json'), false);
-            assert.equal(normalizer.supportsDenormalization(undefined, 'json'), false);
-            assert.equal(normalizer.supportsDenormalization(true, 'json', Boolean), false);
-            assert.equal(normalizer.supportsDenormalization('foo', 'json', String), false);
-            assert.equal(normalizer.supportsDenormalization(123, 'json', Number), false);
-            assert.equal(normalizer.supportsDenormalization(123.45, 'json', Number), false);
-            assert.equal(normalizer.supportsDenormalization([], 'json', Array), false);
-            assert.equal(normalizer.supportsDenormalization({}, 'json', Object), false);
+            assert.strictEqual(normalizer.supportsDenormalization(null, 'json'), false);
+            assert.strictEqual(normalizer.supportsDenormalization(undefined, 'json'), false);
+            assert.strictEqual(normalizer.supportsDenormalization(true, 'json', Boolean), false);
+            assert.strictEqual(normalizer.supportsDenormalization('foo', 'json', String), false);
+            assert.strictEqual(normalizer.supportsDenormalization(123, 'json', Number), false);
+            assert.strictEqual(normalizer.supportsDenormalization(123.45, 'json', Number), false);
+            assert.strictEqual(normalizer.supportsDenormalization([], 'json', Array), false);
+            assert.strictEqual(normalizer.supportsDenormalization({}, 'json', Object), false);
         });
         it('should return false for classes with no class metadata', () => {
-            assert.equal(normalizer.supportsDenormalization({}, 'json', new class Foo {}), false);
-            assert.equal(normalizer.supportsDenormalization({}, 'json', UndecoratedModel), false);
+            assert.strictEqual(normalizer.supportsDenormalization({}, 'json', new class Foo {}), false);
+            assert.strictEqual(normalizer.supportsDenormalization({}, 'json', UndecoratedModel), false);
         });
         it('should return true for classes with class metadata', () => {
-            assert.equal(normalizer.supportsDenormalization({}, 'json', TypeDecoratedModel), true);
+            assert.strictEqual(normalizer.supportsDenormalization({}, 'json', TypeDecoratedModel), true);
         });
     });
 });

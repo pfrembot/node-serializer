@@ -15,10 +15,10 @@ describe('EncoderRegistry', () => {
         const encoderRegistry = new EncoderRegistry();
 
         it('should return void', () => {
-            assert.equal(encoderRegistry.addEncoder(encoder), void 0);
+            assert.strictEqual(encoderRegistry.addEncoder(encoder), void 0);
         });
         it('should have added the encoder to its internal storage', () => {
-            assert.equal(encoderRegistry.encoders.length, 1);
+            assert.strictEqual(encoderRegistry.encoders.length, 1);
             assert.strictEqual(encoderRegistry.encoders[0], encoder);
         });
     });
@@ -31,7 +31,7 @@ describe('EncoderRegistry', () => {
 
         it('should return a encoder object', () => {
             assert.ok(encoderRegistry.getEncoder('json'));
-            assert.equal(typeof encoderRegistry.getEncoder('json'), 'object');
+            assert.strictEqual(typeof encoderRegistry.getEncoder('json'), 'object');
         });
         it('should return an instance of JsonEncoder', () => {
             assert(encoderRegistry.getEncoder('json') instanceof JsonEncoder);

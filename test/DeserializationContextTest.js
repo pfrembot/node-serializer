@@ -13,7 +13,7 @@ describe('DeserializationContext', () => {
             const data = {};
             const context = new DeserializationContext(data, 'json', Object);
 
-            assert.equal(context.format, 'json');
+            assert.strictEqual(context.format, 'json');
             assert.strictEqual(context.data, data);
             assert.strictEqual(context.cls, Object);
         });
@@ -21,7 +21,7 @@ describe('DeserializationContext', () => {
             const options = { foo: true };
             const context = new DeserializationContext({}, 'json', Object, options);
 
-            assert.equal(context.foo, true);
+            assert.strictEqual(context.foo, true);
         });
         it('should set data and format properties to be read-only', () => {
             const data = {};
@@ -31,7 +31,7 @@ describe('DeserializationContext', () => {
             assert.throws(() => context.format = false);
             assert.throws(() => context.cls = Boolean);
 
-            assert.equal(context.format, 'json');
+            assert.strictEqual(context.format, 'json');
             assert.strictEqual(context.data, data);
             assert.strictEqual(context.cls, Object);
         });

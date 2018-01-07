@@ -33,16 +33,16 @@ describe('MetadataFactory', () => {
         it('should be cached inside reflect-metadata storage', () => {
             const keys = Reflect.getMetadataKeys(TypeDecoratedModel);
 
-            assert.equal(keys.length, 1);
-            assert.equal(typeof keys[0], 'symbol');
-            assert.equal(keys[0].toString(), 'Symbol(gson:metadata:key)');
+            assert.strictEqual(keys.length, 1);
+            assert.strictEqual(typeof keys[0], 'symbol');
+            assert.strictEqual(keys[0].toString(), 'Symbol(gson:metadata:key)');
             assert.strictEqual(Reflect.getMetadata(keys[0], TypeDecoratedModel), metadata);
         });
         it('should return the same instance of ClassMetadata', () => {
             assert.strictEqual(metadataFactory.getClassMetadata(TypeDecoratedModel), metadata);
         });
         it('should contain 3 keys (propA, propB, propC)', () => {
-            assert.equal(Object.keys(metadata).length, 3);
+            assert.strictEqual(Object.keys(metadata).length, 3);
             assert.deepEqual(Object.keys(metadata), ['propA', 'propB', 'propC'])
         });
         it('should contain property metadata for propA, propB, propC', () => {
@@ -60,31 +60,31 @@ describe('MetadataFactory', () => {
             assert(metadata instanceof PropertyMetadata);
         });
         it('should be undefined for missing properties', () => {
-            assert.equal(missing, undefined);
+            assert.strictEqual(missing, undefined);
         });
         it('should contain expected property metadata for propA', () => {
             const metadata = metadataFactory.getPropertyMetadata(TypeDecoratedModel, 'propA');
 
-            assert.equal(metadata.name, 'propA');
-            assert.equal(metadata.decorators.length, 1);
-            assert.equal(metadata.decorators[0] instanceof Type, true);
-            assert.equal(metadata.decorators[0].type, Boolean);
+            assert.strictEqual(metadata.name, 'propA');
+            assert.strictEqual(metadata.decorators.length, 1);
+            assert.strictEqual(metadata.decorators[0] instanceof Type, true);
+            assert.strictEqual(metadata.decorators[0].type, Boolean);
         });
         it('should contain expected property metadata for propB', () => {
             const metadata = metadataFactory.getPropertyMetadata(TypeDecoratedModel, 'propB');
 
-            assert.equal(metadata.name, 'propB');
-            assert.equal(metadata.decorators.length, 1);
-            assert.equal(metadata.decorators[0] instanceof Type, true);
-            assert.equal(metadata.decorators[0].type, Number);
+            assert.strictEqual(metadata.name, 'propB');
+            assert.strictEqual(metadata.decorators.length, 1);
+            assert.strictEqual(metadata.decorators[0] instanceof Type, true);
+            assert.strictEqual(metadata.decorators[0].type, Number);
         });
         it('should contain expected property metadata for propC', () => {
             const metadata = metadataFactory.getPropertyMetadata(TypeDecoratedModel, 'propC');
 
-            assert.equal(metadata.name, 'propC');
-            assert.equal(metadata.decorators.length, 1);
-            assert.equal(metadata.decorators[0] instanceof Type, true);
-            assert.equal(metadata.decorators[0].type, String);
+            assert.strictEqual(metadata.name, 'propC');
+            assert.strictEqual(metadata.decorators.length, 1);
+            assert.strictEqual(metadata.decorators[0] instanceof Type, true);
+            assert.strictEqual(metadata.decorators[0].type, String);
         });
     });
 
@@ -95,32 +95,32 @@ describe('MetadataFactory', () => {
         metadataFactory.decoratorRegistry.addDecorator(new Type());
 
         it('should return false for null', () => {
-            assert.equal(metadataFactory.hasClassMetadata(null), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(null), false);
         });
         it('should return false for undefined', () => {
-            assert.equal(metadataFactory.hasClassMetadata(undefined), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(undefined), false);
         });
         it('should return false for boolean', () => {
-            assert.equal(metadataFactory.hasClassMetadata(Boolean), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(Boolean), false);
         });
         it('should return false for number', () => {
-            assert.equal(metadataFactory.hasClassMetadata(Number), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(Number), false);
         });
         it('should return false for string', () => {
-            assert.equal(metadataFactory.hasClassMetadata(String), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(String), false);
         });
         it('should return false for Object', () => {
-            assert.equal(metadataFactory.hasClassMetadata(Object), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(Object), false);
         });
         it('should return false for Array', () => {
-            assert.equal(metadataFactory.hasClassMetadata(Array), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(Array), false);
         });
         it('should return false for decorated class', () => {
-            assert.equal(metadataFactory.hasClassMetadata(UndecoratedModel), false);
+            assert.strictEqual(metadataFactory.hasClassMetadata(UndecoratedModel), false);
         });
         it('should return true for decorated class', () => {
-            assert.equal(metadataFactory.hasClassMetadata(TypeDecoratedModel), true); // cold cache
-            assert.equal(metadataFactory.hasClassMetadata(TypeDecoratedModel), true); // warm cache
+            assert.strictEqual(metadataFactory.hasClassMetadata(TypeDecoratedModel), true); // cold cache
+            assert.strictEqual(metadataFactory.hasClassMetadata(TypeDecoratedModel), true); // warm cache
         });
     });
 });

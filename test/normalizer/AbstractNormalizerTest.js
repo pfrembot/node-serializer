@@ -107,7 +107,7 @@ describe('AbstractNormalizer', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should always return false since this method should be overridden by concrete class', () => {
-            assert.equal(normalizer.supportsNormalization(), false);
+            assert.strictEqual(normalizer.supportsNormalization(), false);
         });
     });
 
@@ -115,7 +115,7 @@ describe('AbstractNormalizer', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should always return false since this method should be overridden by concrete class', () => {
-            assert.equal(normalizer.supportsDenormalization(), false);
+            assert.strictEqual(normalizer.supportsDenormalization(), false);
         });
     });
 });

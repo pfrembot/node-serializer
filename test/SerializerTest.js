@@ -38,28 +38,28 @@ describe('Serializer', () => {
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
         it('should return void if no data is provided', () => {
-            assert.equal(serializer.serialize(void 0, 'json'), undefined);
+            assert.strictEqual(serializer.serialize(void 0, 'json'), undefined);
         });
         it('should return serialized null if null is provided', () => {
-            assert.equal(serializer.serialize(null, 'json'), "null");
+            assert.strictEqual(serializer.serialize(null, 'json'), "null");
         });
         it('should return serialized string if string is provided', () => {
-            assert.equal(serializer.serialize('string', 'json'), "\"string\"");
+            assert.strictEqual(serializer.serialize('string', 'json'), "\"string\"");
         });
         it('should return serialized integer if integer is provided', () => {
-            assert.equal(serializer.serialize(123, 'json'), "123");
+            assert.strictEqual(serializer.serialize(123, 'json'), "123");
         });
         it('should return serialized float if float is provided', () => {
-            assert.equal(serializer.serialize(123.45, 'json'), "123.45");
+            assert.strictEqual(serializer.serialize(123.45, 'json'), "123.45");
         });
         it('should return serialized boolean if boolean is provided', () => {
-            assert.equal(serializer.serialize(true, 'json'), "true");
+            assert.strictEqual(serializer.serialize(true, 'json'), "true");
         });
         it('should return serialized empty array if empty array is provided', () => {
-            assert.equal(serializer.serialize([], 'json'), "[]");
+            assert.strictEqual(serializer.serialize([], 'json'), "[]");
         });
         it('should return serialized empty array if empty object is provided', () => {
-            assert.equal(serializer.serialize({}, 'json'), "{}");
+            assert.strictEqual(serializer.serialize({}, 'json'), "{}");
         });
     });
 
@@ -73,8 +73,8 @@ describe('Serializer', () => {
         it('should be a serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
-            assert.equal(typeof json, 'string');
-            assert.equal(json, '{"propA":true,"propB":123,"propC":"propC"}');
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC"}');
         });
     });
 
@@ -90,8 +90,8 @@ describe('Serializer', () => {
         it('should be a serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
-            assert.equal(typeof json, 'string');
-            assert.equal(json, '{"propA":true,"propB":123,"propC":"propC"}');
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC"}');
         });
     });
 
@@ -107,8 +107,8 @@ describe('Serializer', () => {
         it('should be a serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
-            assert.equal(typeof json, 'string');
-            assert.equal(json, '{"propA":"propA","propB":{"propA":true,"propB":123,"propC":"propC"},"propC":{"propA":true,"propB":123,"propC":"propC"}}');
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":"propA","propB":{"propA":true,"propB":123,"propC":"propC"},"propC":{"propA":true,"propB":123,"propC":"propC"}}');
         });
     });
 
@@ -119,19 +119,19 @@ describe('Serializer', () => {
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
         it('should return null if serialized null is provided', () => {
-            assert.equal(serializer.deserialize("null", 'json'), null);
+            assert.strictEqual(serializer.deserialize("null", 'json'), null);
         });
         it('should return empty string if serialized empty string is provided', () => {
-            assert.equal(serializer.deserialize('""', 'json'), '');
+            assert.strictEqual(serializer.deserialize('""', 'json'), '');
         });
         it('should return string if serialized string is provided', () => {
-            assert.equal(serializer.deserialize("\"string\"", 'json'), 'string');
+            assert.strictEqual(serializer.deserialize("\"string\"", 'json'), 'string');
         });
         it('should return integer if serialized integer is provided', () => {
-            assert.equal(serializer.deserialize("123", 'json'), 123);
+            assert.strictEqual(serializer.deserialize("123", 'json'), 123);
         });
         it('should return float if serialized float is provided', () => {
-            assert.equal(serializer.deserialize("123.45", 'json'), 123.45);
+            assert.strictEqual(serializer.deserialize("123.45", 'json'), 123.45);
         });
         it('should return boolean if serialized boolean is provided', () => {
             assert.strictEqual(serializer.deserialize("true", 'json'), true);

@@ -15,10 +15,10 @@ describe('DecoderRegistry', () => {
         const decoderRegistry = new DecoderRegistry();
 
         it('should return void', () => {
-            assert.equal(decoderRegistry.addDecoder(decoder), void 0);
+            assert.strictEqual(decoderRegistry.addDecoder(decoder), void 0);
         });
         it('should have added the decoder to its internal storage', () => {
-            assert.equal(decoderRegistry.decoders.length, 1);
+            assert.strictEqual(decoderRegistry.decoders.length, 1);
             assert.strictEqual(decoderRegistry.decoders[0], decoder);
         });
     });
@@ -31,7 +31,7 @@ describe('DecoderRegistry', () => {
 
         it('should return a decoder object', () => {
             assert.ok(decoderRegistry.getDecoder('json'));
-            assert.equal(typeof decoderRegistry.getDecoder('json'), 'object');
+            assert.strictEqual(typeof decoderRegistry.getDecoder('json'), 'object');
         });
         it('should return an instance of JsonDecoder', () => {
             assert(decoderRegistry.getDecoder('json') instanceof JsonDecoder);

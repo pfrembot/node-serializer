@@ -10,7 +10,7 @@ describe('ClassMetadata', () => {
         assert(metadata instanceof ClassMetadata);
     });
     it('should contain an keys equal to the length of property metadata added', () => {
-        assert.equal(Object.keys(metadata).length, 1);
+        assert.strictEqual(Object.keys(metadata).length, 1);
     });
     it('should contain the same instance of PropertyMetadata accessible at its property name', () => {
         assert.strictEqual(propertyMetadata, metadata['property']);

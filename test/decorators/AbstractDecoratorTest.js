@@ -24,7 +24,7 @@ describe('AbstractDecorator', () => {
             const expected = { foo: true };
 
             assert('foo' in decorator.apply(expected));
-            assert.equal(decorator.apply(expected).foo, true)
+            assert.strictEqual(decorator.apply(expected).foo, true)
         });
     });
 });

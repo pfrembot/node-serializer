@@ -101,27 +101,27 @@ describe('DefaultNormalizer', () => {
 
     describe('#supportsNormalization', () => {
         it('should always return true as the final fallback normalizer', () => {
-            assert.equal(normalizer.supportsNormalization(), true);
-            assert.equal(normalizer.supportsNormalization(null, 'json'), true);
-            assert.equal(normalizer.supportsNormalization(true, 'json'), true);
-            assert.equal(normalizer.supportsNormalization("foo", 'json'), true);
-            assert.equal(normalizer.supportsNormalization(123, 'json'), true);
-            assert.equal(normalizer.supportsNormalization(123.45, 'json'), true);
-            assert.equal(normalizer.supportsNormalization([], 'json'), true);
-            assert.equal(normalizer.supportsNormalization({}, 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization(), true);
+            assert.strictEqual(normalizer.supportsNormalization(null, 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization(true, 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization("foo", 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization(123, 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization(123.45, 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization([], 'json'), true);
+            assert.strictEqual(normalizer.supportsNormalization({}, 'json'), true);
         });
     });
 
     describe('#supportsDenormalization', () => {
         it('should always return true as the final fallback normalizer', () => {
-            assert.equal(normalizer.supportsDenormalization(), true);
-            assert.equal(normalizer.supportsDenormalization(null, 'json'), true);
-            assert.equal(normalizer.supportsDenormalization(true, 'json', Boolean), true);
-            assert.equal(normalizer.supportsDenormalization("foo", 'json', String), true);
-            assert.equal(normalizer.supportsDenormalization(123, 'json', Number), true);
-            assert.equal(normalizer.supportsDenormalization(123.45, 'json', Number), true);
-            assert.equal(normalizer.supportsDenormalization([], 'json', Array), true);
-            assert.equal(normalizer.supportsDenormalization({}, 'json', Object), true);
+            assert.strictEqual(normalizer.supportsDenormalization(), true);
+            assert.strictEqual(normalizer.supportsDenormalization(null, 'json'), true);
+            assert.strictEqual(normalizer.supportsDenormalization(true, 'json', Boolean), true);
+            assert.strictEqual(normalizer.supportsDenormalization("foo", 'json', String), true);
+            assert.strictEqual(normalizer.supportsDenormalization(123, 'json', Number), true);
+            assert.strictEqual(normalizer.supportsDenormalization(123.45, 'json', Number), true);
+            assert.strictEqual(normalizer.supportsDenormalization([], 'json', Array), true);
+            assert.strictEqual(normalizer.supportsDenormalization({}, 'json', Object), true);
         });
     });
 });

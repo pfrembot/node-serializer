@@ -9,7 +9,7 @@ describe('PropertyMetadata', () => {
         assert(metadata instanceof PropertyMetadata);
     });
     it('should contain the property name it is used for', () => {
-        assert.equal(metadata.name, 'property');
+        assert.strictEqual(metadata.name, 'property');
     });
     it('should contain the property decorators', () => {
         assert.deepEqual(metadata.decorators, decorators);
