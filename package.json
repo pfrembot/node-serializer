@@ -28,6 +28,7 @@
     "nyc": "^11.4.1"
   },
   "dependencies": {
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "xml2js": "^0.4.19"
   }
 }

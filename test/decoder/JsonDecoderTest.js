@@ -15,7 +15,7 @@ describe('JsonDecoder', () => {
             assert(data instanceof Object);
             assert.strictEqual(data.propA, true);
             assert.strictEqual(data.propB, 3);
-            assert.strictEqual(data.propC, "test");
+            assert.strictEqual(data.propC, 'test');
         });
     });
 

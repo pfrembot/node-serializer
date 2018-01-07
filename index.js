@@ -10,6 +10,8 @@ var DefaultNormalizer = require('./lib/normalizer/DefaultNormalizer').default;
 var MetadataAwareNormalizer = require('./lib/normalizer/MetadataAwareNormalizer').default;
 var JsonEncoder = require('./lib/encoder/JsonEncoder').default;
 var JsonDecoder = require('./lib/decoder/JsonDecoder').default;
+var XmlEncoder = require('./lib/encoder/XmlEncoder').default;
+var XmlDecoder = require('./lib/decoder/XmlDecoder').default;
 
 // decorator classes
 var Type = require('./lib/decorators/Type').Type;
@@ -24,6 +26,8 @@ normalizerRegistry.addNormalizer(new DefaultNormalizer());
 normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
 encoderRegistry.addEncoder(new JsonEncoder());
 decoderRegistry.addDecoder(new JsonDecoder());
+encoderRegistry.addEncoder(new XmlEncoder());
+decoderRegistry.addDecoder(new XmlDecoder());
 
 decoratorRegistry.addDecorator(new Type());
 decoratorRegistry.addDecorator(new SerializedName());
