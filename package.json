@@ -4,7 +4,7 @@
   "description": "Json serialization library for node inspired by Symfony's Serializer Component (https://symfony.com/doc/current/components/serializer.html)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require babel-core/register --recursive ./test",
+    "tests": "mocha --require babel-core/register --recursive ./test",
     "build": "babel src --out-dir lib",
     "flow": "flow"
   },
