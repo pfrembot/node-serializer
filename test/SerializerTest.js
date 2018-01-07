@@ -9,9 +9,11 @@ import DefaultNormalizer from '../src/normalizer/DefaultNormalizer';
 import MetadataAwareNormalizer from '../src/normalizer/MetadataAwareNormalizer';
 import UndecoratedModel from './_fixtures/models/UndecoratedModel';
 import TypeDecoratedModel from './_fixtures/models/TypeDecoratedModel';
+import ExposeDecoratedModel from './_fixtures/models/ExposeDecoratedModel';
 import SerializedNameDecoratedModel from './_fixtures/models/SerializedNameDecoratedModel';
 import NestedModel from './_fixtures/models/NestedModel';
 import { SerializedName } from '../src/decorators/SerializedName';
+import { Expose } from '../src/decorators/Expose';
 import { Type } from '../src/decorators/Type';
 
 describe('Serializer', () => {
@@ -92,6 +94,40 @@ describe('Serializer', () => {
 
             assert.strictEqual(typeof json, 'string');
             assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC"}');
+        });
+    });
+
+    describe('#serialize(ExposeDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const model = new ExposeDecoratedModel();
+
+        serializer.decoratorRegistry.addDecorator(new Expose());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.encoderRegistry.addEncoder(new JsonEncoder());
+
+        it('should be a serialized as json', () => {
+            const json = serializer.serialize(model, 'json');
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propB":123,"propC":"propC"}'); // propA removed
+        });
+    });
+
+    describe('#serialize(SerializedNameDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const model = new SerializedNameDecoratedModel();
+
+        serializer.decoratorRegistry.addDecorator(new SerializedName());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.encoderRegistry.addEncoder(new JsonEncoder());
+
+        it('should be a serialized as json', () => {
+            const json = serializer.serialize(model, 'json');
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"prop_a":true,"prop_b":123,"prop_c":"propC"}');
         });
     });
 
@@ -181,6 +217,25 @@ describe('Serializer', () => {
         });
     });
 
+    describe('#deserialize(ExposeDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const data = '{"propA":false,"propB":321,"propC":"bar"}';
+
+        serializer.decoratorRegistry.addDecorator(new Expose());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.decoderRegistry.addDecoder(new JsonDecoder());
+
+        it('should be a deserialized to ExposeDecoratedModel', () => {
+            const model = serializer.deserialize(data, 'json', ExposeDecoratedModel);
+
+            assert(model instanceof ExposeDecoratedModel);
+            assert.strictEqual(model.propA, false); // propA still intact
+            assert.strictEqual(model.propB, 321);
+            assert.strictEqual(model.propC, 'bar');
+        });
+    });
+
     describe('#deserialize(SerializedNameDecoratedModel)', () => {
         const serializer = new Serializer();
         const data = '{"prop_a":false,"prop_b":321,"prop_c":"baz"}';
@@ -190,7 +245,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to TypeDecoratedModel', () => {
+        it('should be a deserialized to SerializedNameDecoratedModel', () => {
             const model = serializer.deserialize(data, 'json', SerializedNameDecoratedModel);
 
             assert(model instanceof SerializedNameDecoratedModel);

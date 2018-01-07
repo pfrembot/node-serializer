@@ -40,7 +40,7 @@ export class SerializedName extends AbstractDecorator {
  * SerializedName Decorator
  *
  * This decorator is used to modify the serialized property name to something other
- * than the classes default property name during (d0)serialization
+ * than the classes default property name during serialization/deserialization
  *
  * @target({"PROPERTY", "METHOD"})
  *
