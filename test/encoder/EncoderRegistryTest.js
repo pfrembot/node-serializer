@@ -7,7 +7,7 @@ describe('EncoderRegistry', () => {
     const encoderRegistry = new EncoderRegistry();
 
     it('should be instance of EncoderRegistry', () => {
-        assert.equal(encoderRegistry instanceof EncoderRegistry, true);
+        assert(encoderRegistry instanceof EncoderRegistry);
     });
 
     describe('#addEncoder', () => {
@@ -34,7 +34,7 @@ describe('EncoderRegistry', () => {
             assert.equal(typeof encoderRegistry.getEncoder('json'), 'object');
         });
         it('should return an instance of JsonEncoder', () => {
-            assert.equal(encoderRegistry.getEncoder('json') instanceof JsonEncoder, true);
+            assert(encoderRegistry.getEncoder('json') instanceof JsonEncoder);
         });
         it('should return the same encoder instance', () => {
             assert.strictEqual(encoderRegistry.getEncoder('json'), encoder);

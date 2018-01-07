@@ -9,7 +9,7 @@ describe('AbstractNormalizer', () => {
     const normalizer = new AbstractNormalizer();
 
     it('should be an instance of AbstractNormalizer', () => {
-        assert.equal(normalizer instanceof AbstractNormalizer, true);
+        assert(normalizer instanceof AbstractNormalizer);
     });
 
     describe('#get metadataFactory', () => {
@@ -22,7 +22,7 @@ describe('AbstractNormalizer', () => {
         it('should return an instance of MetadataFactory', () => {
             normalizer.metadataFactory = metadataFactory;
 
-            assert.equal(normalizer.metadataFactory instanceof MetadataFactory, true);
+            assert(normalizer.metadataFactory instanceof MetadataFactory);
             assert.strictEqual(normalizer.metadataFactory, metadataFactory)
         });
     });
@@ -47,7 +47,7 @@ describe('AbstractNormalizer', () => {
         it('should return an instance of NormalizerRegistry', () => {
             normalizer.normalizerRegistry = normalizerRegistry;
 
-            assert.equal(normalizer.normalizerRegistry instanceof NormalizerRegistry, true);
+            assert(normalizer.normalizerRegistry instanceof NormalizerRegistry);
             assert.strictEqual(normalizer.normalizerRegistry, normalizerRegistry)
         });
     });
@@ -72,7 +72,7 @@ describe('AbstractNormalizer', () => {
         it('should return an instance of DecoratorRegistry', () => {
             normalizer.decoratorRegistry = decoratorRegistry;
 
-            assert.equal(normalizer.decoratorRegistry instanceof DecoratorRegistry, true);
+            assert(normalizer.decoratorRegistry instanceof DecoratorRegistry);
             assert.strictEqual(normalizer.decoratorRegistry, decoratorRegistry)
         });
     });

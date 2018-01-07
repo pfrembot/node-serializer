@@ -11,7 +11,7 @@ describe('NormalizerRegistry', () => {
     const normalizerRegistry = new NormalizerRegistry();
 
     it('should be an instance of DefaultNormalizer', () => {
-        assert.equal(normalizerRegistry instanceof NormalizerRegistry, true);
+        assert(normalizerRegistry instanceof NormalizerRegistry);
     });
 
     describe('#constructor', () => {

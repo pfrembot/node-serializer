@@ -6,7 +6,7 @@ describe('JsonEncoder', () => {
     const encoder = new JsonEncoder();
 
     it('should be instance of JsonEncoder', () => {
-        assert.equal(encoder instanceof JsonEncoder, true);
+        assert(encoder instanceof JsonEncoder);
     });
 
     describe('#encode', () => {

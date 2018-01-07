@@ -12,10 +12,10 @@ describe('TypeDecorator', () => {
     const type = new Type();
 
     it('should be an instance of Function', () => {
-        assert.equal(TypeDecorator instanceof Function, true);
+        assert(TypeDecorator instanceof Function);
     });
     it('should return an instance of Function when declared', () => {
-        assert.equal(decorator instanceof Function, true);
+        assert(decorator instanceof Function);
     });
     it('should decorate class with property type metadata when invoked', () => {
         const property = 'property';
@@ -25,7 +25,7 @@ describe('TypeDecorator', () => {
 
         const metadata = Reflect.getMetadata(type.getKey(), cls, property);
 
-        assert.equal(metadata instanceof Type, true);
+        assert(metadata instanceof Type);
         assert.strictEqual(metadata.type, Boolean);
     });
 });
@@ -34,7 +34,7 @@ describe('Type', () => {
     const type = new Type(Boolean);
 
     it('should be an instance of Type', () => {
-        assert.equal(type instanceof Type, true);
+        assert(type instanceof Type);
     });
 
     describe('#getKey()', () => {
@@ -42,7 +42,7 @@ describe('Type', () => {
             assert.doesNotThrow(() => type.getKey());
         });
         it('should return a unique symbol tied to its class', () => {
-            assert.equal(typeof type.getKey() === 'symbol', true);
+            assert(typeof type.getKey() === 'symbol');
             assert.strictEqual(type.getKey(), new Type().getKey());
             assert.notStrictEqual(type.getKey(), (new class extends AbstractDecorator {}).getKey());
         });

@@ -15,7 +15,7 @@ describe('MetadataFactory', () => {
     metadataFactory.decoratorRegistry.addDecorator(new Type());
 
     it('should be instance of MetadataFactory', () => {
-        assert.equal(metadataFactory instanceof MetadataFactory, true);
+        assert(metadataFactory instanceof MetadataFactory);
     });
     it('should contain a reference to the decorator registry', () => {
         assert.strictEqual(decoratorRegistry, metadataFactory.decoratorRegistry);
@@ -25,7 +25,7 @@ describe('MetadataFactory', () => {
         const metadata = metadataFactory.getClassMetadata(TypeDecoratedModel);
 
         it('should be an instance of ClassMetadata', () => {
-            assert.equal(metadata instanceof ClassMetadata, true);
+            assert(metadata instanceof ClassMetadata);
         });
         it('should return empty ClassMetadata instance for invalid classes', () => {
             assert(metadataFactory.getClassMetadata(null) instanceof ClassMetadata);
@@ -46,9 +46,9 @@ describe('MetadataFactory', () => {
             assert.deepEqual(Object.keys(metadata), ['propA', 'propB', 'propC'])
         });
         it('should contain property metadata for propA, propB, propC', () => {
-            assert.equal(metadata.propA instanceof PropertyMetadata, true);
-            assert.equal(metadata.propB instanceof PropertyMetadata, true);
-            assert.equal(metadata.propC instanceof PropertyMetadata, true);
+            assert(metadata.propA instanceof PropertyMetadata);
+            assert(metadata.propB instanceof PropertyMetadata);
+            assert(metadata.propC instanceof PropertyMetadata);
         });
     });
 
@@ -57,7 +57,7 @@ describe('MetadataFactory', () => {
         const missing = metadataFactory.getPropertyMetadata(TypeDecoratedModel, 'missingProp');
 
         it('should be an instance of PropertyMetadata', () => {
-            assert.equal(metadata instanceof PropertyMetadata, true);
+            assert(metadata instanceof PropertyMetadata);
         });
         it('should be undefined for missing properties', () => {
             assert.equal(missing, undefined);

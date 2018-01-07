@@ -5,14 +5,14 @@ describe('JsonDecoder', () => {
     const decoder = new JsonDecoder();
 
     it('should be instance of JsonDecoder', () => {
-        assert.equal(decoder instanceof JsonDecoder, true);
+        assert(decoder instanceof JsonDecoder);
     });
 
     describe('#decode()', () => {
         const data = decoder.decode('{"propA": true, "propB": 3, "propC": "test"}');
 
         it('should be an Object with decoded data', () => {
-            assert.equal(data instanceof Object, true);
+            assert(data instanceof Object);
             assert.equal(data.propA, true);
             assert.equal(data.propB, 3);
             assert.equal(data.propC, "test");

@@ -7,7 +7,7 @@ describe('DecoderRegistry', () => {
     const decoderRegistry = new DecoderRegistry();
 
     it('should be instance of DecoderRegistry', () => {
-        assert.equal(decoderRegistry instanceof DecoderRegistry, true);
+        assert(decoderRegistry instanceof DecoderRegistry);
     });
 
     describe('#addDecoder', () => {
@@ -34,7 +34,7 @@ describe('DecoderRegistry', () => {
             assert.equal(typeof decoderRegistry.getDecoder('json'), 'object');
         });
         it('should return an instance of JsonDecoder', () => {
-            assert.equal(decoderRegistry.getDecoder('json') instanceof JsonDecoder, true);
+            assert(decoderRegistry.getDecoder('json') instanceof JsonDecoder);
         });
         it('should return the same decoder instance', () => {
             assert.strictEqual(decoderRegistry.getDecoder('json'), decoder);

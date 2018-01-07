@@ -6,7 +6,7 @@ describe('PropertyMetadata', () => {
     const metadata = new PropertyMetadata('property', ...decorators);
 
     it('should be instance of ClassMetadata', () => {
-        assert.equal(metadata instanceof PropertyMetadata, true);
+        assert(metadata instanceof PropertyMetadata);
     });
     it('should contain the property name it is used for', () => {
         assert.equal(metadata.name, 'property');
@@ -24,7 +24,7 @@ describe('PropertyMetadata', () => {
         it('should return an empty array if no decorators provided', () => {
             const metadata = new PropertyMetadata('property');
 
-            assert.equal(metadata.getDecorators() instanceof Array, true);
+            assert(metadata.getDecorators() instanceof Array);
             assert.deepEqual(metadata.getDecorators(), []);
         });
     });

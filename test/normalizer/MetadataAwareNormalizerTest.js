@@ -22,7 +22,7 @@ describe('MetadataAwareNormalizer', () => {
     normalizerRegistry.addNormalizer(normalizer);
 
     it('should be an instance of MetadataAwareNormalizer', () => {
-        assert.equal(normalizer instanceof MetadataAwareNormalizer, true);
+        assert(normalizer instanceof MetadataAwareNormalizer);
     });
     it('should contain a reference to the metadataFactory', () => {
         assert.strictEqual(normalizer.metadataFactory, metadataFactory);

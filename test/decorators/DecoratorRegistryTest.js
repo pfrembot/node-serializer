@@ -9,7 +9,7 @@ describe('DecoratorRegistry', () => {
     const decoratorRegistry = new DecoratorRegistry();
 
     it('should be an instance of DecoratorRegistry', () => {
-        assert.equal(decoratorRegistry instanceof DecoratorRegistry, true);
+        assert(decoratorRegistry instanceof DecoratorRegistry);
     });
 
     describe('#addDecorator', () => {
@@ -24,8 +24,8 @@ describe('DecoratorRegistry', () => {
 
             decoratorRegistry.addDecorator(decorator);
 
-            assert.equal(decorator.getKey() in decoratorRegistry.decorators, true);
-            assert.equal(decoratorRegistry.decorators[decorator.getKey()] instanceof AbstractDecorator, true);
+            assert(decorator.getKey() in decoratorRegistry.decorators);
+            assert(decoratorRegistry.decorators[decorator.getKey()] instanceof AbstractDecorator);
         });
     });
 

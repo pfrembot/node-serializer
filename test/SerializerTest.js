@@ -18,16 +18,16 @@ describe('Serializer', () => {
     const serializer = new Serializer();
 
     it('should be instance of Serializer', () => {
-        assert.equal(serializer instanceof Serializer, true);
+        assert(serializer instanceof Serializer);
     });
     it('should contain a reference to the normalizerRegistry', () => {
-        assert.equal(serializer.normalizerRegistry instanceof NormalizerRegistry, true);
+        assert(serializer.normalizerRegistry instanceof NormalizerRegistry);
     });
     it('should contain a reference to the encoderRegistry', () => {
-        assert.equal(serializer.encoderRegistry instanceof EncoderRegistry, true);
+        assert(serializer.encoderRegistry instanceof EncoderRegistry);
     });
     it('should contain a reference to the decoderRegistry', () => {
-        assert.equal(serializer.decoderRegistry instanceof DecoderRegistry, true);
+        assert(serializer.decoderRegistry instanceof DecoderRegistry);
         assert.strictEqual(serializer.decoratorRegistry, serializer.normalizerRegistry.metadataFactory.decoratorRegistry);
     });
 

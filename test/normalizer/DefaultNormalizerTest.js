@@ -13,7 +13,7 @@ describe('DefaultNormalizer', () => {
     normalizerRegistry.addNormalizer(normalizer);
 
     it('should be an instance of DefaultNormalizer', () => {
-        assert.equal(normalizer instanceof DefaultNormalizer, true);
+        assert(normalizer instanceof DefaultNormalizer);
     });
     it('should contain a reference to the metadataFactory', () => {
         assert.strictEqual(normalizer.metadataFactory, metadataFactory);

@@ -7,7 +7,7 @@ describe('ClassMetadata', () => {
     const metadata = new ClassMetadata([ propertyMetadata ]);
 
     it('should be instance of ClassMetadata', () => {
-        assert.equal(metadata instanceof ClassMetadata, true);
+        assert(metadata instanceof ClassMetadata);
     });
     it('should contain an keys equal to the length of property metadata added', () => {
         assert.equal(Object.keys(metadata).length, 1);
