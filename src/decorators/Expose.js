@@ -14,7 +14,7 @@ export class Expose extends AbstractDecorator {
     value: boolean;
 
     /**
-     * SerializedName Constructor
+     * Expose Constructor
      *
      * @param {boolean} value Should expose value on serialize
      */
