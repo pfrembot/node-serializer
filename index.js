@@ -16,6 +16,7 @@ var XmlDecoder = require('./lib/decoder/XmlDecoder').default;
 // decorator classes
 var Type = require('./lib/decorators/Type').Type;
 var Expose = require('./lib/decorators/Expose').Expose;
+var SerializationGroups = require('./lib/decorators/SerializationGroups').SerializationGroups;
 var SerializedName = require('./lib/decorators/SerializedName').SerializedName;
 
 var decoratorRegistry = new DecoratorRegistry();
@@ -32,6 +33,7 @@ decoderRegistry.addDecoder(new XmlDecoder());
 
 decoratorRegistry.addDecorator(new Type());
 decoratorRegistry.addDecorator(new Expose());
+decoratorRegistry.addDecorator(new SerializationGroups());
 decoratorRegistry.addDecorator(new SerializedName());
 
 exports.default = new Serializer(normalizerRegistry, encoderRegistry, decoderRegistry);

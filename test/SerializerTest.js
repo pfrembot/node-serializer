@@ -11,8 +11,10 @@ import UndecoratedModel from './_fixtures/models/UndecoratedModel';
 import TypeDecoratedModel from './_fixtures/models/TypeDecoratedModel';
 import ExposeDecoratedModel from './_fixtures/models/ExposeDecoratedModel';
 import SerializedNameDecoratedModel from './_fixtures/models/SerializedNameDecoratedModel';
+import SerializationGroupsDecoratedModel from './_fixtures/models/SerializationGroupsDecoratedModel';
 import NestedModel from './_fixtures/models/NestedModel';
 import { SerializedName } from '../src/decorators/SerializedName';
+import { SerializationGroups } from '../src/decorators/SerializationGroups';
 import { Expose } from '../src/decorators/Expose';
 import { Type } from '../src/decorators/Type';
 
@@ -111,6 +113,35 @@ describe('Serializer', () => {
 
             assert.strictEqual(typeof json, 'string');
             assert.strictEqual(json, '{"propB":123,"propC":"propC"}'); // propA removed
+        });
+    });
+
+    describe('#serialize(SerializationGroupsDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const model = new SerializationGroupsDecoratedModel();
+
+        serializer.decoratorRegistry.addDecorator(new SerializationGroups());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.encoderRegistry.addEncoder(new JsonEncoder());
+
+        it('should be a serialized as json normally with no context groups', () => {
+            const json = serializer.serialize(model, 'json');
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC","propD":"propD"}');
+        });
+        it('should be a serialized as json with only foo group data', () => {
+            const json = serializer.serialize(model, 'json', { groups: ['foo'] });
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":true,"propB":123,"propD":"propD"}'); // propC excluded
+        });
+        it('should be a serialized as json with foo and baz group data', () => {
+            const json = serializer.serialize(model, 'json', { groups: ['bar', 'baz'] });
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propB":123,"propC":"propC","propD":"propD"}'); // propA excluded
         });
     });
 
@@ -233,6 +264,37 @@ describe('Serializer', () => {
             assert.strictEqual(model.propA, false); // propA still intact
             assert.strictEqual(model.propB, 321);
             assert.strictEqual(model.propC, 'bar');
+        });
+    });
+
+    describe('#deserialize(SerializationGroupsDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const data = '{"propA":false,"propB":321,"propC":"foo","propD":"bar"}';
+
+        serializer.decoratorRegistry.addDecorator(new SerializationGroups());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.decoderRegistry.addDecoder(new JsonDecoder());
+
+        it('should be a deserialized to SerializationGroupsDecoratedModel', () => {
+            const model = serializer.deserialize(data, 'json', SerializationGroupsDecoratedModel);
+
+            // all data intact
+            assert(model instanceof SerializationGroupsDecoratedModel);
+            assert.strictEqual(model.propA, false);
+            assert.strictEqual(model.propB, 321);
+            assert.strictEqual(model.propC, 'foo');
+            assert.strictEqual(model.propD, 'bar');
+        });
+        it('should still be deserialized to SerializationGroupsDecoratedModel with context groups', () => {
+            const model = serializer.deserialize(data, 'json', SerializationGroupsDecoratedModel, { groups: ['foo'] });
+
+            // all data intact
+            assert(model instanceof SerializationGroupsDecoratedModel);
+            assert.strictEqual(model.propA, false);
+            assert.strictEqual(model.propB, 321);
+            assert.strictEqual(model.propC, 'foo');
+            assert.strictEqual(model.propD, 'bar');
         });
     });
 

@@ -49,14 +49,14 @@ describe('Type', () => {
     });
 
     describe('#apply()', () => {
-        it('should implement an apply method on serialization', () => {
+        it('should type cast result values on serialization', () => {
             const context = new SerializationContext();
             const result = type.apply({ name: 'prop', value: 'true' }, context);
 
             assert.strictEqual(result.name, 'prop');
             assert.strictEqual(result.value, true); // type cast during apply
         });
-        it('should implement an apply method on deserialization', () => {
+        it('should type cast result values on deserialization', () => {
             const context = new DeserializationContext();
             const result = type.apply({ name: 'prop', value: 'true' }, context);
 

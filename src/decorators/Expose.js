@@ -35,7 +35,8 @@ export class Expose extends AbstractDecorator {
 /**
  * Expose Decorator
  *
- * This decorator is used to expose/exclude a property during serialization
+ * This decorator is used to expose/exclude a property during serialization *only*. This will
+ * have no effect when deserializing data
  *
  * @target({"PROPERTY", "METHOD"})
  *

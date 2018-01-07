@@ -49,14 +49,14 @@ describe('Expose', () => {
     });
 
     describe('#apply()', () => {
-        it('should implement an apply method on serialization', () => {
+        it('should set result value undefined serialization', () => {
             const context = new SerializationContext();
             const result = expose.apply({ name: 'prop', value: 'true' }, context);
 
             assert.strictEqual(result.name, 'prop');
             assert.strictEqual(result.value, undefined); // removed during apply
         });
-        it('should implement an apply method on deserialization', () => {
+        it('should do nothing on deserialization', () => {
             const context = new DeserializationContext();
             const result = expose.apply({ name: 'prop', value: 'true' }, context);
 

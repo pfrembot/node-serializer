@@ -48,14 +48,14 @@ describe('SerializedName', () => {
     });
 
     describe('#apply()', () => {
-        it('should implement an apply method on serialization', () => {
+        it('should modify result name on serialization', () => {
             const context = new SerializationContext();
             const result = serializedName.apply({ name: 'prop', value: 'true' }, context);
 
             assert.strictEqual(result.name, 'foo'); // prop changed during apply
             assert.strictEqual(result.value, 'true');
         });
-        it('should implement an apply method on deserialization', () => {
+        it('should restore result name on deserialization', () => {
             const context = new DeserializationContext();
             const result = serializedName.apply({ name: 'foo', value: 'true' }, context);
 

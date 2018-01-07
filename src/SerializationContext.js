@@ -6,6 +6,9 @@
  * @class SerializationContext
  */
 class SerializationContext {
+    $key: string;
+    $value: any;
+
     data: any;
     format: string;
 
