@@ -16,7 +16,7 @@ describe('SerializedNameDecorator', () => {
     it('should return an instance of Function when declared', () => {
         assert(decorator instanceof Function);
     });
-    it('should decorate class with property type metadata when invoked', () => {
+    it('should decorate class with property name metadata when invoked', () => {
         const property = 'property';
         const cls = class { [property] = true; };
 
@@ -32,7 +32,7 @@ describe('SerializedNameDecorator', () => {
 describe('SerializedName', () => {
     const serializedName = new SerializedName('foo', 'prop');
 
-    it('should be an instance of Type', () => {
+    it('should be an instance of SerializedName', () => {
         assert(serializedName instanceof SerializedName);
     });
 
