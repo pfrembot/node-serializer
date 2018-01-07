@@ -205,7 +205,7 @@ By default a couple of encoders/decoders are provided:
 * __JsonEncoder/JsonDecoder__: handles converting to and from JSON formatted strings
 * __XmlEncoder/XmlDecoder__: handles converting to and from XML formatted strings (uses: [xml2js](https://www.npmjs.com/package/xml2js) lib)
 
-_note: user-defined encoders/decoders can be added (see: [Advanced Usage](#Advanced Usage))_
+_note: user-defined encoders/decoders can be added (see: [Advanced Usage](#Advanced-Usage))_
 
 ## Normalizers
 
@@ -225,7 +225,7 @@ The application of decorators to data properties/values takes place inside of th
 target normalizer implementation. By default this is included with the MetadataAwareNormalizer, but if additional user-defined
 normalizers have been added they are responsible for managing decorators and metadata if they choose to do so.
 
-_note: user-defined normalizers can be added (see: [Advanced Usage](#Advanced Usage))_
+_note: user-defined normalizers can be added (see: [Advanced Usage](#Advanced-Usage))_
 
 ## Decorators
 
@@ -244,7 +244,7 @@ By default there a few decorators included:
 * __SerializationGroups__: Determines if a property should be exposed during serialization by group (only applies to serialization)
 * __SerializedName__: Converts property names to and from their serialized counterpart (e.g. my_serialized_prop <-> myDeserializedProp)
 
-_note: user-defined normalizers can be added (see: [Advanced Usage](#Advanced Usage))_
+_note: user-defined normalizers can be added (see: [Advanced Usage](#Advanced-Usage))_
 
 # Advanced Usage
 
