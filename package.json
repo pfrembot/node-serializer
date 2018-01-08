@@ -10,7 +10,6 @@
   },
   "keywords": [
     "json",
-    "gson",
     "serialization",
     "deserialization"
   ],
