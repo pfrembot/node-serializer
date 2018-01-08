@@ -1,6 +1,6 @@
 Node Serializer
 ===============
-Serialization library for node inspired by [Symfony's Serializer Component(https://symfony.com/doc/current/components/serializer.html)](https://symfony.com/doc/current/components/serializer.html)
+Serialization library for node inspired by [Symfony's Serializer Component](https://symfony.com/doc/current/components/serializer.html)
 
 Library for controlling the way that application data is serialized/deserialized from a formatted string.
 
@@ -15,7 +15,7 @@ npm install --save node-serializer
 __Serialize Custom Classes (plain)__
 
 ```javascript
-import serializer from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
 
 class Foo {
     id = 3;
@@ -30,8 +30,8 @@ serializer.serialize(foo, 'json'); // {"id":3,"name":"My Name"}
 __Specify Data Types__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.Type(Number)
@@ -50,8 +50,8 @@ serializer.serialize(foo, 'json'); // {"id":3,"name":"My Name","alive":true}
 __Change Property Names__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.SerializedName('ID')
@@ -68,8 +68,8 @@ serializer.serialize(foo, 'json'); // {"ID":3,"Name":"My Name"}
 __Expose/Exclude Properties__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.Expose(true)
@@ -88,8 +88,8 @@ serializer.serialize(foo, 'json'); // {"id":3,"name":"My Name"}
 __Expose/Exclude Properties by Group__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.SerializationGroups('foo')
@@ -110,7 +110,7 @@ serializer.serialize(foo, 'json', { groups: ['baz'] }); // {"alive":true}
 __Deserialize Directly to Model__
 
 ```javascript
-import serializer from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
 
 class Foo {
     id = 3;
@@ -127,8 +127,8 @@ serializer.deserialize('{"id":4,"name":"John Doe"}', 'json', Foo);
 __Deserialize and Fix Type__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.Type(Number)
@@ -149,8 +149,8 @@ serializer.deserialize('{"id":"4","name":"John Doe","alive":1}', 'json', Foo);
 __Deserialize and Restore Property Name__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     @Serializer.SerializedName('ID')
@@ -169,8 +169,8 @@ serializer.deserialize('{"ID":"4","Name":"John Doe"}', 'json', Foo);
 __Deserialize Nested Models__
 
 ```javascript
-import serializer from 'node-serializer';
-import { decorators as Serializer } from 'node-serializer';
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
 
 class Foo {
     id = 3;
