@@ -34,7 +34,7 @@ describe('MetadataAwareNormalizer', () => {
         assert.strictEqual(normalizer.decoratorRegistry, decoratorRegistry);
     });
 
-    describe('#normalize', () => {
+    describe('#normalize()', () => {
         it('should throw an exception when attempting to normalize invalid data', () => {
             assert.throws(() => normalizer.normalize(null, 'json'));
             assert.throws(() => normalizer.normalize(undefined, 'json'));
@@ -111,7 +111,7 @@ describe('MetadataAwareNormalizer', () => {
         });
     });
 
-    describe('#denormalize', () => {
+    describe('#denormalize()', () => {
         it('should throw an error when attempting to denormalize into non-constructable cls', () => {
             assert.throws(() => normalizer.denormalize({}, 'json'));
             assert.throws(() => normalizer.denormalize({}, 'json', null));
@@ -177,7 +177,7 @@ describe('MetadataAwareNormalizer', () => {
         });
     });
 
-    describe('#supportsNormalization', () => {
+    describe('#supportsNormalization()', () => {
         it('should return false for built-in data types', () => {
             assert.strictEqual(normalizer.supportsNormalization(null), false);
             assert.strictEqual(normalizer.supportsNormalization(undefined), false);
@@ -197,7 +197,7 @@ describe('MetadataAwareNormalizer', () => {
         });
     });
 
-    describe('#supportsDenormalization', () => {
+    describe('#supportsDenormalization()', () => {
         it('should return false for built-in data types', () => {
             assert.strictEqual(normalizer.supportsDenormalization(null, 'json'), false);
             assert.strictEqual(normalizer.supportsDenormalization(undefined, 'json'), false);

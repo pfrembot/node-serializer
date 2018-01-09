@@ -12,7 +12,7 @@ describe('AbstractNormalizer', () => {
         assert(normalizer instanceof AbstractNormalizer);
     });
 
-    describe('#get metadataFactory', () => {
+    describe('#get metadataFactory()', () => {
         const normalizer = new AbstractNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
 
@@ -27,7 +27,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#set metadataFactory', () => {
+    describe('#set metadataFactory()', () => {
         const normalizer = new AbstractNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
 
@@ -37,7 +37,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#get normalizerRegistry', () => {
+    describe('#get normalizerRegistry()', () => {
         const normalizer = new AbstractNormalizer();
         const normalizerRegistry = new NormalizerRegistry();
 
@@ -52,7 +52,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#set normalizerRegistry', () => {
+    describe('#set normalizerRegistry()', () => {
         const normalizer = new AbstractNormalizer();
         const normalizerRegistry = new NormalizerRegistry();
 
@@ -62,7 +62,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#get decoratorRegistry', () => {
+    describe('#get decoratorRegistry()', () => {
         const normalizer = new AbstractNormalizer();
         const decoratorRegistry = new DecoratorRegistry();
 
@@ -77,7 +77,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#set decoratorRegistry', () => {
+    describe('#set decoratorRegistry()', () => {
         const normalizer = new AbstractNormalizer();
         const decoratorRegistry = new DecoratorRegistry();
 
@@ -87,7 +87,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#normalize', () => {
+    describe('#normalize()', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should throw an error since this method should be overridden by concrete class', () => {
@@ -95,7 +95,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#denormalize', () => {
+    describe('#denormalize()', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should throw an error since this method should be overridden by concrete class', () => {
@@ -103,7 +103,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#supportsNormalization', () => {
+    describe('#supportsNormalization()', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should always return false since this method should be overridden by concrete class', () => {
@@ -111,7 +111,7 @@ describe('AbstractNormalizer', () => {
         });
     });
 
-    describe('#supportsDenormalization', () => {
+    describe('#supportsDenormalization()', () => {
         const normalizer = new AbstractNormalizer();
 
         it('should always return false since this method should be overridden by concrete class', () => {

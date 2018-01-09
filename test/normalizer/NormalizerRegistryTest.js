@@ -14,7 +14,7 @@ describe('NormalizerRegistry', () => {
         assert(normalizerRegistry instanceof NormalizerRegistry);
     });
 
-    describe('#constructor', () => {
+    describe('#constructor()', () => {
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
@@ -23,7 +23,7 @@ describe('NormalizerRegistry', () => {
         });
     });
 
-    describe('#addNormalizer', () => {
+    describe('#addNormalizer()', () => {
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
 
@@ -42,7 +42,7 @@ describe('NormalizerRegistry', () => {
         });
     });
 
-    describe('#getNormalizer', () => {
+    describe('#getNormalizer()', () => {
         const defaultNormalizer = new DefaultNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);
@@ -73,7 +73,7 @@ describe('NormalizerRegistry', () => {
         });
     });
 
-    describe('#getDenormalizer', () => {
+    describe('#getDenormalizer()', () => {
         const defaultNormalizer = new DefaultNormalizer();
         const metadataFactory = new MetadataFactory(new DecoratorRegistry());
         const normalizerRegistry = new NormalizerRegistry(metadataFactory);

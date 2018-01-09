@@ -25,7 +25,7 @@ describe('DefaultNormalizer', () => {
         assert.strictEqual(normalizer.decoratorRegistry, decoratorRegistry);
     });
 
-    describe('#normalize', () => {
+    describe('#normalize()', () => {
         it('should should return properly normalized void', () => {
             assert.strictEqual(normalizer.normalize(void 0, 'json'), void 0);
         });
@@ -62,7 +62,7 @@ describe('DefaultNormalizer', () => {
         });
     });
 
-    describe('#denormalize', () => {
+    describe('#denormalize()', () => {
         it('should should return properly denormalized void', () => {
             assert.strictEqual(normalizer.denormalize(void 0, 'json'), void 0);
         });
@@ -99,7 +99,7 @@ describe('DefaultNormalizer', () => {
         });
     });
 
-    describe('#supportsNormalization', () => {
+    describe('#supportsNormalization()', () => {
         it('should always return true as the final fallback normalizer', () => {
             assert.strictEqual(normalizer.supportsNormalization(), true);
             assert.strictEqual(normalizer.supportsNormalization(null, 'json'), true);
@@ -112,7 +112,7 @@ describe('DefaultNormalizer', () => {
         });
     });
 
-    describe('#supportsDenormalization', () => {
+    describe('#supportsDenormalization()', () => {
         it('should always return true as the final fallback normalizer', () => {
             assert.strictEqual(normalizer.supportsDenormalization(), true);
             assert.strictEqual(normalizer.supportsDenormalization(null, 'json'), true);
