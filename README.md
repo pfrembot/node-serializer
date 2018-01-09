@@ -7,7 +7,7 @@ Library for controlling the way that application data is serialized/deserialized
 # Installation
 
 ```bash
-npm install --save node-serializer
+npm install --save @pfrembot/node-serializer
 ```
 
 # Basic Usage
