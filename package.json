@@ -1,6 +1,6 @@
 {
   "name": "@pfrembot/node-serializer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Serialization library for node inspired by Symfony's Serializer Component (https://symfony.com/doc/current/components/serializer.html)",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "nyc": "^11.4.1"
   },
   "dependencies": {
+    "lodash.mapvalues": "^4.6.0",
     "reflect-metadata": "^0.1.10",
     "xml2js": "^0.4.19"
   }
