@@ -8,6 +8,7 @@ var Serializer = require('./lib/Serializer').default;
 // normalizers / encoders
 var DefaultNormalizer = require('./lib/normalizer/DefaultNormalizer').default;
 var MetadataAwareNormalizer = require('./lib/normalizer/MetadataAwareNormalizer').default;
+var CollectionNormalizer = require('./lib/normalizer/CollectionNormalizer').default;
 var JsonEncoder = require('./lib/encoder/JsonEncoder').default;
 var JsonDecoder = require('./lib/decoder/JsonDecoder').default;
 var XmlEncoder = require('./lib/encoder/XmlEncoder').default;
@@ -26,6 +27,7 @@ var decoderRegistry = new DecoderRegistry();
 
 normalizerRegistry.addNormalizer(new DefaultNormalizer());
 normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+normalizerRegistry.addNormalizer(new CollectionNormalizer());
 encoderRegistry.addEncoder(new JsonEncoder());
 decoderRegistry.addDecoder(new JsonDecoder());
 encoderRegistry.addEncoder(new XmlEncoder());
