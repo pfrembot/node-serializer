@@ -52,10 +52,14 @@ class DefaultNormalizer extends AbstractNormalizer {
 
     /** @inheritDoc */
     denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
-        const type = data !== null ? typeof data : 'null';
+        let type = data !== null ? typeof data : 'null';
 
         // ensure cls is valid constructor
         cls = cls instanceof Function ? cls : Object;
+
+        if (Array.isArray(data)) {
+            type = 'array';
+        }
 
         switch (type) {
             case 'null':
@@ -63,20 +67,10 @@ class DefaultNormalizer extends AbstractNormalizer {
             case 'number':
             case 'boolean':
             case 'undefined':
+            case 'array':
                 return data;
             case 'object':
-                const keys = Object.keys(data);
-                const result = Array.isArray(data) ? [] : new cls();
-
-                return keys.reduce((result, key) => {
-                    const value = data[key];
-                    const constructor = value && value.constructor ? value.constructor : undefined;
-                    const denormalizer = this.normalizerRegistry.getDenormalizer(value, format, constructor, context);
-
-                    // @todo: need a way to determine the correct class to use (e.x. { foo: FooClass } or FooClass[])
-                    result[key] = denormalizer.denormalize(value, format, constructor, context);
-                    return result;
-                }, result);
+                return Object.assign(new cls(), data);
         }
 
         throw new DenormalizationException(`Unable to normalize type "${type}"`);
@@ -84,7 +78,7 @@ class DefaultNormalizer extends AbstractNormalizer {
 
     /** @inheritDoc */
     supportsNormalization(data: any, format: string, context: SerializationContext) {
-        return true; // attempts to normalize all data types
+        return true; // attempt to normalize all data types
     }
 
     /** @inheritDoc */
