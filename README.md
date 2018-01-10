@@ -434,6 +434,10 @@ _note: user-defined normalizers can be added (see: [Advanced Usage](#advanced-us
 
 ## Adding Custom Encoders
 
+All encoders are expected to satisfy the EncoderInterface: [src/encoder/EncoderInterface.js](src/encoder/EncoderInterface.js)
+
+__Example:__
+
 ```javascript
 import serializer from '@pfrembot/node-serializer';
 import { encoderRegistry } from '@pfrembot/node-serializer';
@@ -457,6 +461,10 @@ serializer.serialize({ data: '' }, 'my_custom_format'); // 'Encoded result strin
 ```
 
 ## Adding Custom Decoders
+
+All decoders are expected to satisfy the DecoderInterface: [src/decoder/DecoderInterface.js](src/decoder/DecoderInterface.js)
+
+__Example:__
 
 ```javascript
 import serializer from '@pfrembot/node-serializer';
