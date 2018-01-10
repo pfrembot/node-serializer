@@ -4,6 +4,12 @@ import AbstractDecorator from './AbstractDecorator';
 import SerializationContext from '../SerializationContext';
 import DeserializationContext from '../DeserializationContext';
 
+/**
+ * Test if value is scalar
+ *
+ * @param {*} value
+ * @returns {boolean}
+ */
 function isScalar(value) {
     return !(value instanceof Object)
         && !(value instanceof Array)
@@ -19,7 +25,7 @@ export class Type extends AbstractDecorator {
     type: Function;
 
     /**
-     * SerializedName Constructor
+     * Type Constructor
      *
      * @param {Function} type Serialized name to use
      */

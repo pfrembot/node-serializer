@@ -63,7 +63,7 @@ describe('Type', () => {
             assert.strictEqual(result.name, 'prop');
             assert.strictEqual(result.value, true); // type cast during apply
         });
-        it('should override normalized result.value constructor on deserialization of non-scalars', () => {
+        it('should override normalized result.value prototype on deserialization of non-scalars', () => {
             const type = new Type(UndecoratedModel);
             const context = new DeserializationContext();
             const result = type.apply({ name: 'prop', value: { propA: 'true' } }, context);
