@@ -1,4 +1,4 @@
-import { Type } from "../../../src/decorators";
+import { Type } from '../../../src/decorators';
 
 class TypeDecoratedModel {
 

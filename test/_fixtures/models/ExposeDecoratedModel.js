@@ -1,4 +1,4 @@
-import { Expose } from "../../../src/decorators";
+import { Expose } from '../../../src/decorators';
 
 class ExposeDecoratedModel {
 

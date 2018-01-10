@@ -1,4 +1,4 @@
-import { SerializationGroups } from "../../../src/decorators";
+import { SerializationGroups } from '../../../src/decorators';
 
 class SerializationGroupsDecoratedModel {
 

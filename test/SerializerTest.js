@@ -10,11 +10,13 @@ import MetadataAwareNormalizer from '../src/normalizer/MetadataAwareNormalizer';
 import UndecoratedModel from './_fixtures/models/UndecoratedModel';
 import TypeDecoratedModel from './_fixtures/models/TypeDecoratedModel';
 import ExposeDecoratedModel from './_fixtures/models/ExposeDecoratedModel';
+import DiscriminatorDecoratedModel from './_fixtures/models/DiscriminatorDecoratedModel';
 import SerializedNameDecoratedModel from './_fixtures/models/SerializedNameDecoratedModel';
 import SerializationGroupsDecoratedModel from './_fixtures/models/SerializationGroupsDecoratedModel';
 import NestedModel from './_fixtures/models/NestedModel';
 import { SerializedName } from '../src/decorators/SerializedName';
 import { SerializationGroups } from '../src/decorators/SerializationGroups';
+import { Discriminator } from '../src/decorators/Discriminator';
 import { Expose } from '../src/decorators/Expose';
 import { Type } from '../src/decorators/Type';
 
@@ -74,7 +76,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json', () => {
+        it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
@@ -91,7 +93,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json', () => {
+        it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
@@ -108,12 +110,29 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json', () => {
+        it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
             assert.strictEqual(json, '{"propB":123,"propC":"propC"}'); // propA removed
         });
+    });
+
+    describe('#serialize(DiscriminatorDecoratedModel)', () => {
+        const serializer = new Serializer();
+        const model = new DiscriminatorDecoratedModel();
+
+        serializer.decoratorRegistry.addDecorator(new Discriminator());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.encoderRegistry.addEncoder(new JsonEncoder());
+
+        it('should serialize without discrimination (discriminator only applied on deserialization)', () => {
+            const json = serializer.serialize(model, 'json');
+
+            assert.strictEqual(typeof json, 'string');
+            assert.strictEqual(json, '{"propA":{"propA":true,"propB":123,"propC":"propC"}}');
+        })
     });
 
     describe('#serialize(SerializationGroupsDecoratedModel)', () => {
@@ -125,19 +144,19 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json normally with no context groups', () => {
+        it('should be serialized as json normally with no context groups', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
             assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC","propD":"propD"}');
         });
-        it('should be a serialized as json with only foo group data', () => {
+        it('should be serialized as json with only foo group data', () => {
             const json = serializer.serialize(model, 'json', { groups: ['foo'] });
 
             assert.strictEqual(typeof json, 'string');
             assert.strictEqual(json, '{"propA":true,"propB":123,"propD":"propD"}'); // propC excluded
         });
-        it('should be a serialized as json with foo and baz group data', () => {
+        it('should be serialized as json with foo and baz group data', () => {
             const json = serializer.serialize(model, 'json', { groups: ['bar', 'baz'] });
 
             assert.strictEqual(typeof json, 'string');
@@ -154,7 +173,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json', () => {
+        it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
@@ -171,7 +190,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
-        it('should be a serialized as json', () => {
+        it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
@@ -219,7 +238,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to UndecoratedModel', () => {
+        it('should be deserialized to UndecoratedModel', () => {
             const model = serializer.deserialize(data, 'json', UndecoratedModel);
 
             assert(model instanceof UndecoratedModel);
@@ -238,7 +257,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to TypeDecoratedModel', () => {
+        it('should be deserialized to TypeDecoratedModel', () => {
             const model = serializer.deserialize(data, 'json', TypeDecoratedModel);
 
             assert(model instanceof TypeDecoratedModel);
@@ -257,13 +276,58 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to ExposeDecoratedModel', () => {
+        it('should be deserialized to ExposeDecoratedModel with all data intact', () => {
             const model = serializer.deserialize(data, 'json', ExposeDecoratedModel);
 
             assert(model instanceof ExposeDecoratedModel);
             assert.strictEqual(model.propA, false); // propA still intact
             assert.strictEqual(model.propB, 321);
             assert.strictEqual(model.propC, 'bar');
+        });
+    });
+
+    describe('#deserialize(DiscriminatorDecoratedModel)', () => {
+        const serializer = new Serializer();
+
+        serializer.decoratorRegistry.addDecorator(new Discriminator());
+        serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.decoderRegistry.addDecoder(new JsonDecoder());
+
+        it('should be deserialized into a plain object model when json type equals "null"', () => {
+            const data = '{"propA":{"type":null,"propA":false,"propB":321,"propC":"foo"}}';
+            const model = serializer.deserialize(data, 'json', DiscriminatorDecoratedModel);
+
+            assert(model instanceof DiscriminatorDecoratedModel);
+
+            assert(model.propA instanceof Object);
+            assert(!(model.propA instanceof UndecoratedModel));
+            assert(!(model.propA instanceof TypeDecoratedModel));
+            assert.strictEqual(model.propA.propA, false);
+            assert.strictEqual(model.propA.propB, 321);
+            assert.strictEqual(model.propA.propC, 'foo');
+        });
+        it('should be deserialized into an undecorated model when json type equals "UndecoratedModel"', () => {
+            const data = '{"propA":{"type":"UndecoratedModel","propA":false,"propB":321,"propC":"bar"}}';
+            const model = serializer.deserialize(data, 'json', DiscriminatorDecoratedModel);
+
+            assert(model instanceof DiscriminatorDecoratedModel);
+
+            assert(model.propA instanceof UndecoratedModel);
+            assert.strictEqual(model.propA.propA, false);
+            assert.strictEqual(model.propA.propB, 321);
+            assert.strictEqual(model.propA.propC, 'bar');
+        });
+        it('should be deserialized into a type decorated model when json type equals "TypeDecoratedModel"', () => {
+            const data = '{"propA":{"type":"TypeDecoratedModel","propA":false,"propB":321,"propC":"baz"}}';
+            const model = serializer.deserialize(data, 'json', DiscriminatorDecoratedModel);
+
+            assert(model instanceof DiscriminatorDecoratedModel);
+
+            assert(model.propA instanceof TypeDecoratedModel);
+            assert.strictEqual(model.propA.propA, false);
+            assert.strictEqual(model.propA.propB, 321);
+            assert.strictEqual(model.propA.propC, 'baz');
         });
     });
 
@@ -276,7 +340,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to SerializationGroupsDecoratedModel', () => {
+        it('should be deserialized to SerializationGroupsDecoratedModel', () => {
             const model = serializer.deserialize(data, 'json', SerializationGroupsDecoratedModel);
 
             // all data intact
@@ -307,7 +371,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to SerializedNameDecoratedModel', () => {
+        it('should be deserialized to SerializedNameDecoratedModel', () => {
             const model = serializer.deserialize(data, 'json', SerializedNameDecoratedModel);
 
             assert(model instanceof SerializedNameDecoratedModel);
@@ -326,7 +390,7 @@ describe('Serializer', () => {
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
-        it('should be a deserialized to NestedModel', () => {
+        it('should be deserialized to NestedModel', () => {
             const model = serializer.deserialize(data, 'json', NestedModel);
 
             assert(model instanceof NestedModel);
