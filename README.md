@@ -12,6 +12,8 @@ npm install --save node-serializer
 
 # Basic Usage
 
+## Serialization
+
 __Serialize Custom Classes (plain)__
 
 ```javascript
@@ -107,6 +109,8 @@ serializer.serialize(foo, 'json', { groups: ['bar', 'baz'] }); // {"name":"My Na
 serializer.serialize(foo, 'json', { groups: ['baz'] }); // {"alive":true}
 ```
 
+## Deserialization
+
 __Deserialize Directly to Model__
 
 ```javascript
@@ -120,11 +124,11 @@ class Foo {
 serializer.deserialize('{"id":4,"name":"John Doe"}', 'json', Foo);
 
 /*
-    Foo { id: 4, name: 'John Doe' }
+  Results: Foo { id: 4, name: 'John Doe' }
  */
 ```
 
-__Deserialize and Fix Type__
+__Deserialize and Fix Data Type__
 
 ```javascript
 import serializer from '@pfrembot/node-serializer';
@@ -142,7 +146,7 @@ class Foo {
 serializer.deserialize('{"id":"4","name":"John Doe","alive":1}', 'json', Foo); 
 
 /*
-    Foo { id: 4, name: 'John Doe', alive: true }
+  Results: Foo { id: 4, name: 'John Doe', alive: true }
  */
 ```
 
@@ -162,7 +166,7 @@ class Foo {
 serializer.deserialize('{"ID":"4","Name":"John Doe"}', 'json', Foo); 
 
 /*
-    Foo { id: 4, name: 'John Doe' }
+  Results: Foo { id: 4, name: 'John Doe' }
  */
 ```
 
@@ -189,7 +193,185 @@ class Bar {
 serializer.deserialize('{"id":4,"name":"John Doe","foo":{"id":5,"name":"foo"}}', 'json', Bar); 
 
 /*
-    Bar { id: 4, name: 'John Doe', foo: Foo { id: 5, name: 'foo' }}
+  Results: Bar { id: 4, name: 'John Doe', foo: Foo { id: 5, name: 'foo' }}
+ */
+```
+
+## Lists, Maps, and Polymorphic Types
+
+Sometimes you have encoded data that represents a collection of items. Sometimes these can be a collection of all the same
+type of item (homogeneous), and other times one containing various data types (heterogeneous). These can be tricky to 
+deserialize because it is not always clear what type of data we are going to be converting into, and more so, impossible 
+since we don't have a clear idea what the collection keys/indices will be ahead of time.
+
+Enter ListOf, MapOf, and Polymorphic serializer types. These intermediate data types allow us to define collections of
+data abstractly so we can avoid the unpleasantness of trying create decorated classes that describe collections of known
+data types we already have defined.
+
+__Deserialize Lists of Single Type (homogeneous)__
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { types as Types } from '@pfrembot/node-serializer';
+
+class Foo {
+    id = null;
+    name = null;
+}
+
+const json = '[{"id":1,"name":"John D"},{"id":2,"name":"Jane D"},{"id":3,"name":"Frank"}]';
+
+serializer.deserialize(json, 'json', Types.ListOf(Foo));
+
+/*
+  Results: [ Foo { id: 1, name: 'John D' }, Foo { id: 2, name: 'Jane D' }, Foo { id: 3, name: 'Frank' } ]
+ */
+```
+
+__Deserialize Lists of Polymorphic Type (heterogeneous)__
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { types as Types } from '@pfrembot/node-serializer';
+
+// mapper function *must* return a type constructor
+const mapper = value => {
+    if (value.type === 'foo') return Foo;
+    if (value.type === 'bar') return Bar;
+    
+    return Object; // default fallback type
+};
+
+class Foo {
+    type = 'foo';
+    id = null;
+    name = null;
+}
+
+class Bar {
+    type = 'bar';
+    id = null;
+    name = null;
+    age = null;
+}
+
+const json = '[{"type":"foo","id":1,"name":"John D"},{"type":"bar","id":2,"name":"Jane D","age":27},{"id":3,"name":"Frank"}]';
+
+// A discriminator is passed to ListOf instead of a single type. The discriminator will
+// be called by the serializer for each value in the list invoking your mapper function above
+// to determine what type each value should be deserialized into
+serializer.deserialize(json, 'json', Types.ListOf(Types.Discriminator(mapper)));
+
+/*
+  Results: [ Foo { type: 'foo', id: 1, name: 'John D' }, Bar { type: 'bar', id: 2, name: 'Jane D', age: 27 }, { id: 3, name: 'Frank' } ]
+ */
+```
+
+__Deserialize Maps of Single Type (homogeneous)__
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { types as Types } from '@pfrembot/node-serializer';
+
+class Foo {
+    id = null;
+    name = null;
+}
+
+const json = '{"one":{"id":1,"name":"John D"},"two":{"id":2,"name":"Jane D"},"three":{"id":3,"name":"Frank"}]';
+
+serializer.deserialize(json, 'json', Types.MapOf(Foo));
+
+/*
+  Results: { one: Foo { id: 1, name: 'John D' }, two: Foo { id: 2, name: 'Jane D' }, three: Foo { id: 3, name: 'Frank' } }
+ */
+```
+
+__Deserialize Maps of Polymorphic Type (heterogeneous)__
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { types as Types } from '@pfrembot/node-serializer';
+
+// mapper function *must* return a type constructor
+const mapper = value => {
+    if (value.type === 'foo') return Foo;
+    if (value.type === 'bar') return Bar;
+    
+    return Object; // default fallback type
+};
+
+class Foo {
+    type = 'foo';
+    id = null;
+    name = null;
+}
+
+class Bar {
+    type = 'bar';
+    id = null;
+    name = null;
+    age = null;
+}
+
+const json = '{"one":{"type":"foo","id":1,"name":"John D"},"two":{"type":"bar","id":2,"name":"Jane D","age":27},"three":{"id":3,"name":"Frank"}}';
+
+// A discriminator is passed to MapOf instead of a single type. The discriminator will
+// be called by the serializer for each value in the list invoking your mapper function above
+// to determine what type each value should be deserialized into
+serializer.deserialize(json, 'json', Types.MapOf(Types.Discriminator(mapper)));
+
+/*
+  Results: { one: Foo { type: 'foo', id: 1, name: 'John D' }, two: Bar { type: 'bar', id: 2, name: 'Jane D', age: 27 }, three: { id: 3, name: 'Frank' } }
+ */
+```
+
+__Deserialize Polymorphic Properties__
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { decorators as Serializer } from '@pfrembot/node-serializer';
+
+// mapper function *must* return a type constructor
+const mapper = value => {
+    if (value.type === 'bar') return Bar;
+    if (value.type === 'baz') return Baz;
+    
+    return Object; // default fallback type
+};
+
+class Foo {
+    @Serializer.Discriminator(mapper)
+    sibling = null;
+}
+
+class Bar {
+    type = 'bar';
+}
+
+class Baz {
+    type = 'baz';
+}
+
+// has Bar sibling type
+serializer.deserialize('{"sibling":{"type":"bar","id":1}}', 'json', Foo);
+
+/*
+  Results: Foo { sibling: Bar { type: 'bar', id: 2 } }
+ */
+
+// has Bar sibling type
+serializer.deserialize('{"sibling":{"type":"baz","id":2}}', 'json', Foo);
+
+/*
+  Results: Foo { sibling: Baz { type: 'baz', id: 2 } }
+ */
+
+// has unknown sibling type
+serializer.deserialize('{"sibling":{"id":3}}', 'json', Foo);
+
+/*
+  Results: Foo { sibling: { type: null, id: 3 } }
  */
 ```
 
@@ -241,6 +423,7 @@ By default there a few decorators included:
 
 * __Type__: Ensures that the property value is serialized/deserialized as the property data type or class
 * __Expose__: Determines if a property should be exposed during serialization (only applies to serialization)
+* __Discriminator__: Used for polymorphic property types to determine the correct type to deserialize data to (only applies to deserialization)
 * __SerializationGroups__: Determines if a property should be exposed during serialization by group (only applies to serialization)
 * __SerializedName__: Converts property names to and from their serialized counterpart (e.g. my_serialized_prop <-> myDeserializedProp)
 
