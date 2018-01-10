@@ -17,6 +17,7 @@ var XmlDecoder = require('./lib/decoder/XmlDecoder').default;
 // decorator classes
 var Type = require('./lib/decorators/Type').Type;
 var Expose = require('./lib/decorators/Expose').Expose;
+var Discriminator = require('./lib/decorators/Discriminator').Discriminator;
 var SerializationGroups = require('./lib/decorators/SerializationGroups').SerializationGroups;
 var SerializedName = require('./lib/decorators/SerializedName').SerializedName;
 
@@ -35,12 +36,14 @@ decoderRegistry.addDecoder(new XmlDecoder());
 
 decoratorRegistry.addDecorator(new Type());
 decoratorRegistry.addDecorator(new Expose());
+decoratorRegistry.addDecorator(new Discriminator());
 decoratorRegistry.addDecorator(new SerializationGroups());
 decoratorRegistry.addDecorator(new SerializedName());
 
 exports.default = new Serializer(normalizerRegistry, encoderRegistry, decoderRegistry);
 exports.FormatTypes = require('./lib/FormatTypes');
 exports.decorators = require('./lib/decorators');
+exports.types = require('./lib/types');
 
 exports.decoratorRegistry = decoratorRegistry;
 exports.normalizerRegistry = normalizerRegistry;
