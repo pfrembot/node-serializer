@@ -342,7 +342,7 @@ const mapper = value => {
 
 class Foo {
     @Serializer.Discriminator(mapper)
-    sibling = null;
+    child = null;
 }
 
 class Bar {
@@ -353,25 +353,25 @@ class Baz {
     type = 'baz';
 }
 
-// has Bar sibling type
-serializer.deserialize('{"sibling":{"type":"bar","id":1}}', 'json', Foo);
+// has Bar child type
+serializer.deserialize('{"child":{"type":"bar","id":1}}', 'json', Foo);
 
 /*
   Results: Foo { sibling: Bar { type: 'bar', id: 2 } }
  */
 
-// has Bar sibling type
-serializer.deserialize('{"sibling":{"type":"baz","id":2}}', 'json', Foo);
+// has Bar child type
+serializer.deserialize('{"child":{"type":"baz","id":2}}', 'json', Foo);
 
 /*
-  Results: Foo { sibling: Baz { type: 'baz', id: 2 } }
+  Results: Foo { child: Baz { type: 'baz', id: 2 } }
  */
 
-// has unknown sibling type
-serializer.deserialize('{"sibling":{"id":3}}', 'json', Foo);
+// has unknown child type
+serializer.deserialize('{"child":{"id":3}}', 'json', Foo);
 
 /*
-  Results: Foo { sibling: { type: null, id: 3 } }
+  Results: Foo { child: { type: null, id: 3 } }
  */
 ```
 
@@ -432,7 +432,73 @@ _note: user-defined normalizers can be added (see: [Advanced Usage](#advanced-us
 
 # Advanced Usage
 
-_coming soon..._
+## Adding Custom Encoders
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { encoderRegistry } from '@pfrembot/node-serializer';
+
+class MyCustomEncoder {
+    encode(object: any, format: string, context: SerializationContext) {
+        
+        /* implement your encoding logic here */
+        
+        return 'Encoded result string';
+    }
+
+    supportsEncoding(format: string, context: SerializationContext) {
+        return format === 'my_custom_format';
+    }
+}
+
+encoderRegistry.addEncoder(new MyCustomEncoder());
+
+serializer.serialize({ data: '' }, 'my_custom_format'); // 'Encoded result string'
+```
+
+## Adding Custom Decoders
+
+```javascript
+import serializer from '@pfrembot/node-serializer';
+import { decoderRegistry } from '@pfrembot/node-serializer';
+
+class Foo {
+    data = null;
+}
+
+class MyCustomDecoder {
+    decode(string: string, format: string, context: Object) {
+        
+        /* implement your decoding logic here */
+        
+        return { data: 'decoded' };
+    }
+
+    supportsDecoding(format: string, context: Object) {
+        return format === 'my_custom_format';
+    }
+}
+
+encoderRegistry.addDecoder(new MyCustomDecoder());
+
+serializer.deserialize('Encoded result restring', 'my_custom_format', Foo);
+
+/*
+  Results: Foo { data: 'decoded' }
+ */
+```
+
+## Adding Custom Noramlizers
+
+```javascript
+// coming soon
+```
+
+## Adding Custom Decorators
+
+```javascript
+// coming soon
+```
 
 # Tests 
 
