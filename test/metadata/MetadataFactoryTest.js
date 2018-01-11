@@ -42,8 +42,8 @@ describe('MetadataFactory', () => {
             assert.strictEqual(metadataFactory.getClassMetadata(TypeDecoratedModel), metadata);
         });
         it('should contain 3 keys (propA, propB, propC)', () => {
-            assert.strictEqual(Object.keys(metadata).length, 3);
-            assert.deepEqual(Object.keys(metadata), ['propA', 'propB', 'propC'])
+            assert.strictEqual(Object.keys(metadata).length, 4);
+            assert.deepEqual(Object.keys(metadata), ['propA', 'propB', 'propC', 'propD'])
         });
         it('should contain property metadata for propA, propB, propC', () => {
             assert(metadata.propA instanceof PropertyMetadata);

@@ -10,6 +10,9 @@ class TypeDecoratedModel {
 
     @Type(String)
     propC = 'propC';
+
+    @Type(Date)
+    propD = new Date('Wed Jan 10 2018 19:51:15 GMT-0600 (CST)');
 }
 
 export default TypeDecoratedModel;

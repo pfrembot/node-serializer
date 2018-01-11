@@ -7,6 +7,7 @@ import EncoderRegistry from '../src/encoder/EncoderRegistry';
 import DecoderRegistry from '../src/decoder/DecoderRegistry';
 import DefaultNormalizer from '../src/normalizer/DefaultNormalizer';
 import MetadataAwareNormalizer from '../src/normalizer/MetadataAwareNormalizer';
+import DateNormalizer from '../src/normalizer/DateNormalizer';
 import UndecoratedModel from './_fixtures/models/UndecoratedModel';
 import TypeDecoratedModel from './_fixtures/models/TypeDecoratedModel';
 import ExposeDecoratedModel from './_fixtures/models/ExposeDecoratedModel';
@@ -91,13 +92,14 @@ describe('Serializer', () => {
         serializer.decoratorRegistry.addDecorator(new Type());
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new DateNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
         it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
-            assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC"}');
+            assert.strictEqual(json, '{"propA":true,"propB":123,"propC":"propC","propD":"Wed Jan 10 2018 19:51:15 GMT-0600 (CST)"}');
         });
     });
 
@@ -188,13 +190,14 @@ describe('Serializer', () => {
         serializer.decoratorRegistry.addDecorator(new Type());
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new DateNormalizer());
         serializer.encoderRegistry.addEncoder(new JsonEncoder());
 
         it('should be serialized as json', () => {
             const json = serializer.serialize(model, 'json');
 
             assert.strictEqual(typeof json, 'string');
-            assert.strictEqual(json, '{"propA":"propA","propB":{"propA":true,"propB":123,"propC":"propC"},"propC":{"propA":true,"propB":123,"propC":"propC"}}');
+            assert.strictEqual(json, '{"propA":"propA","propB":{"propA":true,"propB":123,"propC":"propC"},"propC":{"propA":true,"propB":123,"propC":"propC","propD":"Wed Jan 10 2018 19:51:15 GMT-0600 (CST)"}}');
         });
     });
 
