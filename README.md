@@ -400,6 +400,7 @@ By default a couple of normalizers are provided:
 * __DefaultNormalizer__: this is the last result if no other normalizer can be selected for the current value being normalized
 * __MetadataAwareNormalizer__: applies decorator logic to values as they are being normalized based on class metadata
 * __CollectionNormalizer__: handles de-normalization of ListOf and MapOf data types (see: [Lists, Maps, and Polymorphic Types](#lists-maps-and-polymorphic-types))
+* __DateNormalizer__: handles normalizing/denormalizing Date objects and typed class properties
 
 Normalizers are applied recursively so as each property/value is visited it will be passed back through the normalizer
 registry chain to determine the correct normalizer to be used for that specific data structure
