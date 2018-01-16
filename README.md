@@ -488,7 +488,7 @@ class MyCustomDecoder {
     }
 }
 
-encoderRegistry.addDecoder(new MyCustomDecoder());
+decoderRegistry.addDecoder(new MyCustomDecoder());
 
 serializer.deserialize('Encoded result restring', 'my_custom_format', Foo);
 
