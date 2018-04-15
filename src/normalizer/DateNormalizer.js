@@ -33,7 +33,8 @@ class DateNormalizer extends AbstractNormalizer {
             );
         }
 
-        return new Date(data);
+        // Prevents invalid values like NaN and empty string from being constructed
+        return data || data === 0 ? new Date(data) : null;
     }
 
     /** @inheritDoc */
