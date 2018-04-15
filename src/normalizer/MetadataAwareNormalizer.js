@@ -8,6 +8,10 @@ import DenormalizationException from '../exception/DenormalizationException';
 import NormalizationException from '../exception/NormalizationException';
 import PropertyMetadata from '../metadata/PropertyMetadata';
 
+function constructorOf(value) {
+    return value != null ? value.constructor : undefined
+}
+
 /**
  * MetadataAwareNormalizer Class
  *
@@ -28,13 +32,9 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
                 : { name: key, value: data[key] } // stub in valid result to allow normal flow
             ;
 
-            // pass nested objects through to be normalized independently
-            if (decorated.value instanceof Object) {
-                const args = [ decorated.value, format, context ];
-                result[decorated.name] = this.normalizerRegistry.getNormalizer(...args).normalize(...args);
-            } else {
-                result[decorated.name] = decorated.value;
-            }
+            const args = [ decorated.value, format, context ];
+
+            result[decorated.name] = this.normalizerRegistry.getNormalizer(...args).normalize(...args);
 
             return result;
         }, {});
@@ -54,12 +54,10 @@ class MetadataAwareNormalizer extends AbstractNormalizer implements NormalizerIn
             const serializedKey = this._getSerializedKey(propertyMetadata, serializationContext);
             const decorated = this.decoratorRegistry.applyDecorators(propertyMetadata, data[serializedKey], context);
 
-            if (decorated.value instanceof Object) {
-                const args = [ decorated.value, format, decorated.value.constructor, context ];
-                result[decorated.name] = this.normalizerRegistry.getDenormalizer(...args).denormalize(...args);
-            } else {
-                result[decorated.name] = decorated.value;
-            }
+            const constructor = decorated.type ? decorated.type : constructorOf(decorated.value);
+            const args = [ decorated.value, format, constructor, context ];
+
+            result[decorated.name] = this.normalizerRegistry.getDenormalizer(...args).denormalize(...args);
 
             return result;
         }, new cls()); // @todo: need to instantiate class without using constructor

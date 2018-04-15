@@ -41,11 +41,16 @@ export class Type extends AbstractDecorator {
             return result;
         }
 
-        if (isScalar(result.value))
+        // convert any incorrect scalar types like numeric strings (e.g. '123' vs 123)
+        if (isScalar(result.value)) {
             result.value = new this.type(result.value).valueOf();
+        }
 
-        if (context instanceof DeserializationContext && !isScalar(result.value))
-            Object.setPrototypeOf(result.value, this.type.prototype);
+        // result type will be used by the metadata aware normalizer during deserialization to
+        // determine the correct data type to hydrate child properties with
+        if (context instanceof DeserializationContext) {
+            result.type = this.type;
+        }
 
         return result;
     }

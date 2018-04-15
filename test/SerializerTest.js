@@ -253,11 +253,12 @@ describe('Serializer', () => {
 
     describe('#deserialize(TypeDecoratedModel)', () => {
         const serializer = new Serializer();
-        const data = '{"propA":"","propB":"321","propC":"bar"}';
+        const data = '{"propA":"","propB":"321","propC":"bar","propD":"2018-04-15T05:04:37.102Z"}';
 
         serializer.decoratorRegistry.addDecorator(new Type());
         serializer.normalizerRegistry.addNormalizer(new DefaultNormalizer());
         serializer.normalizerRegistry.addNormalizer(new MetadataAwareNormalizer());
+        serializer.normalizerRegistry.addNormalizer(new DateNormalizer());
         serializer.decoderRegistry.addDecoder(new JsonDecoder());
 
         it('should be deserialized to TypeDecoratedModel', () => {
@@ -267,6 +268,8 @@ describe('Serializer', () => {
             assert.strictEqual(model.propA, false);
             assert.strictEqual(model.propB, 321);
             assert.strictEqual(model.propC, 'bar');
+            assert(model.propD instanceof Date);
+            assert.equal(model.propD.toISOString(), new Date("2018-04-15T05:04:37.102Z").toISOString());
         });
     });
 

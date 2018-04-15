@@ -5,7 +5,7 @@ import AbstractDecorator from './AbstractDecorator';
 import DecoratorInvalidException from '../exception/DecoratorInvalidException';
 
 export type DecoratorKey = string|Symbol;
-export type DecoratorResult = { name: string, value: any }
+export type DecoratorResult = { name: string, value: any, type?: Function }
 
 type DecoratorStorage = { [DecoratorKey]: DecoratorInterface }
 

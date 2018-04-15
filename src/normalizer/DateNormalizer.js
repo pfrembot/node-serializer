@@ -23,8 +23,8 @@ class DateNormalizer extends AbstractNormalizer {
 
     /** @inheritDoc */
     denormalize(data: any, format: string, cls: ?Function, context: DeserializationContext) {
-        if (typeof data !== 'string') {
-            throw new DenormalizationException(`Normalizer expected data as String, got ${typeof data}`);
+        if (typeof data !== 'string' && typeof data !== 'number') {
+            throw new DenormalizationException(`Normalizer expected data as String or Number, got ${typeof data}`);
         }
 
         if (cls !== Date) {
@@ -43,7 +43,7 @@ class DateNormalizer extends AbstractNormalizer {
 
     /** @inheritDoc */
     supportsDenormalization(data: any, format: string, cls: ?Function, context: DeserializationContext) {
-        return cls === Date && typeof data === 'string';
+        return cls === Date && (typeof data === 'string' || typeof data === 'number');
     }
 }
 export default DateNormalizer;

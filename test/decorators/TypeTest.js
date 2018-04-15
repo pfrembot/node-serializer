@@ -63,13 +63,12 @@ describe('Type', () => {
             assert.strictEqual(result.name, 'prop');
             assert.strictEqual(result.value, true); // type cast during apply
         });
-        it('should override normalized result.value prototype on deserialization of non-scalars', () => {
+        it('should set `result.type` to the new target type', () => {
             const type = new Type(UndecoratedModel);
             const context = new DeserializationContext();
             const result = type.apply({ name: 'prop', value: { propA: 'true' } }, context);
 
-            assert(result.value instanceof UndecoratedModel);
-            assert.strictEqual(result.value.constructor, UndecoratedModel);
+            assert.strictEqual(result.type, UndecoratedModel);
             assert.deepEqual(result.value, { propA: 'true' });
         });
         it('should return an un-modified result object when type.type not a function', () => {
