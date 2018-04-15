@@ -1,11 +1,12 @@
 {
   "name": "@pfrembot/node-serializer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Serialization library for node inspired by Symfony's Serializer Component (https://symfony.com/doc/current/components/serializer.html)",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require babel-core/register --recursive ./test",
     "build": "babel src --out-dir lib",
+    "prepublishOnly": "npm run build",
     "flow": "flow"
   },
   "keywords": [
